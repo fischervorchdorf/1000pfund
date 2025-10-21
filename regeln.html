@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1000 Pfund Rallye - Teil 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 25%, #f06595 50%, #cc5de8 75%, #845ef7 100%);
+            padding: 20px;
+            min-height: 100vh;
+            animation: backgroundShift 10s ease infinite;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            border: 5px solid #ffd43b;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #845ef7 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "🚗";
+            position: absolute;
+            font-size: 120px;
+            opacity: 0.2;
+            top: 50%;
+            animation: drive 4s linear infinite;
+            transform: translateY(-50%);
+            filter: grayscale(30%) sepia(20%);
+        }
+
+        @keyframes drive {
+            0% { left: -150px; transform: translateY(-50%) rotate(-5deg); }
+            100% { left: calc(100% + 150px); transform: translateY(-50%) rotate(5deg); }
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: wobble 2s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .warning-box {
+            background: #fff3bf;
+            border: 4px dashed #ff6b6b;
+            padding: 20px;
+            margin: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transform: rotate(-1deg);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .warning-box h2 {
+            color: #ff6b6b;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .warning-box p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff5f5 0%, #f0f9ff 100%);
+            border-radius: 15px;
+            border-left: 8px solid #ff6b6b;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .section:hover {
+            transform: translateX(10px);
+        }
+        
+        .section-title {
+            color: #ff6b6b;
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title span {
+            font-size: 1.5em;
+        }
+        
+        .rule-item {
+            background: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 2px solid #ffd43b;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .rule-item h3 {
+            color: #845ef7;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .rule-item p, .rule-item ul {
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .rule-item ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .rule-item li {
+            margin: 5px 0;
+        }
+
+        .highlight-box {
+            background: #d3f9d8;
+            border-left: 5px solid #51cf66;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .danger-box {
+            background: #ffe3e3;
+            border-left: 5px solid #ff6b6b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .funny-note {
+            background: #fff3bf;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            font-style: italic;
+            border: 2px dashed #ffd43b;
+            text-align: center;
+        }
+
+        .points-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .points-table th {
+            background: #845ef7;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 1.1em;
+        }
+
+        .points-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .points-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .important {
+            color: #ff6b6b;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .section-title {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏁 DIE 1000 PFUND RALLYE 🏁</h1>
+            <p>Wo Wahnsinn auf Abenteuer trifft!</p>
+        </div>
+
+        <div class="warning-box">
+            <h2>⚠️ ACHTUNG! ⚠️</h2>
+            <p>Dies ist <span class="important">KEINE</span> normale Rallye!<br>
+            Dies ist eine Tortur, eine Herausforderung, ein Abenteuer!<br>
+            Wer hier mitmacht, braucht: Mut, Durchhaltevermögen & einen Funken Wahnsinn!</p>
+        </div>
+
+        <div class="content">
+            <!-- GRUNDKONZEPT -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🎯</span> Das Grundkonzept
+                </div>
+                <div class="rule-item">
+                    <h3>Die Mission</h3>
+                    <p>Kaufe ein <span class="important">mindestens 30 Jahre altes Auto</span> in England für maximal 1000 Pfund (ca. 1200€), schraube es fahrtüchtig und bezwinge damit 7 Tage lang die schönsten und beschwerlichsten Strecken durch Europa!</p>
+                </div>
+                <div class="funny-note">
+                    💡 Je älter, schwächer und rostiger die Karre - desto mehr Startpunkte gibt's! 
+                    <br>Ein Jaguar bringt weniger als ein Ford Fiesta mit Achsbruch!
+                </div>
+            </div>
+
+            <!-- STARTPUNKTE -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🎲</span> Das Punktesystem
+                </div>
+                <div class="rule-item">
+                    <h3>Startpunkte-Kalkulation</h3>
+                    <p>Berechne deine Startpunkte mit einem Excel-Sheet (gibt's nach der Anmeldung):</p>
+                    <ul>
+                        <li><strong>Baujahr & Preis:</strong> Je älter und günstiger = MEHR Punkte</li>
+                        <li><strong>Ausgangsbasis:</strong> 1996 & 1000 Pfund</li>
+                        <li><strong>Multiplikator:</strong> Alte, langsame Autos bekommen einen Bonus-Multiplikator!</li>
+                    </ul>
+                </div>
+                
+                <div class="highlight-box">
+                    <strong>🏆 Beispiel:</strong> Ein 1985er Mini mit 80 PS für 600 Pfund = Mega Startpunkte!<br>
+                    Ein 2005er BMW mit 150 PS für 1800 Pfund = Weniger Punkte, aber mehr Komfort (Weichei!)
+                </div>
+
+                <table class="points-table">
+                    <tr>
+                        <th>Was?</th>
+                        <th>Punkte</th>
+                    </tr>
+                    <tr>
+                        <td>🔧 Behobene Panne (dokumentiert!)</td>
+                        <td><strong>50 Punkte</strong></td>
+                    </tr>
+                    <tr>
+                        <td>💰 Ersatzteile/Werkstatt (1€ = 1 Punkt)</td>
+                        <td><strong>1:1</strong></td>
+                    </tr>
+                    <tr>
+                        <td>📍 Durchfahrtskontrolle</td>
+                        <td><strong>50-200 Punkte</strong></td>
+                    </tr>
+                    <tr>
+                        <td>🏨 Tagesziel erreicht (bis 23:59)</td>
+                        <td><strong>100 Punkte</strong></td>
+                    </tr>
+                    <tr>
+                        <td>🚗 Gefahrene Kilometer (mit Multiplikator!)</td>
+                        <td><strong>1 Meile = X Punkte</strong></td>
+                    </tr>
+                </table>
+
+                <div class="danger-box">
+                    <strong>⚠️ WICHTIG:</strong> Tacho-Fotos sind PFLICHT! Jeden Morgen & Abend den Kilometerstand fotografieren! 
+                    <br>Keine Fotos = Keine Punkte = Keine Ausreden!
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
