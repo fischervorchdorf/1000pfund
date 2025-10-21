@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏁 1000 Pfund Rallye - Tag 4 Wertung 🏁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+        .content { padding: 30px; }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            border: 3px dashed #ff6b6b;
+        }
+        .section-title {
+            font-size: 1.8em;
+            color: #d63031;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .input-group label {
+            flex: 1;
+            font-weight: 700;
+            color: #2d3436;
+        }
+        .input-group input[type="number"],
+        .input-group input[type="text"],
+        .input-group select {
+            width: 150px;
+            padding: 10px;
+            border: 2px solid #ff6b6b;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+        }
+        .checkpoint {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #0984e3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .checkpoint-info { flex: 1; }
+        .checkpoint-name {
+            font-weight: 700;
+            color: #2d3436;
+            font-size: 1.1em;
+        }
+        .checkpoint-desc {
+            color: #636e72;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .checkpoint-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+        .points-display {
+            background: #00b894;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.2em;
+            min-width: 80px;
+            text-align: center;
+        }
+        .subsection-sum {
+            background: #fdcb6e;
+            color: #2d3436;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: right;
+            font-size: 1.3em;
+            font-weight: 700;
+            border: 3px solid #e17055;
+        }
+        .panne-row {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 5px solid #d63031;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+        .panne-row input[type="text"] { 
+            width: 100%;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+        }
+        .panne-row input[type="number"] { 
+            width: 100%;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+        }
+        .panne-header {
+            background: #2d3436;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .panne-points {
+            background: #e17055;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+        .total-section {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            border: 5px solid #e17055;
+        }
+        .total-section h2 {
+            font-size: 2.5em;
+            color: #d63031;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        .total-points {
+            font-size: 4em;
+            color: #00b894;
+            font-weight: 700;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+        }
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', sans-serif;
+            font-weight: 700;
+        }
+        .submit-btn:hover { transform: scale(1.1); }
+        .emoji { font-size: 2em; margin: 0 10px; }
+        .special-section {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+        }
+        .special-section input,
+        .special-section select { background: white; }
+        .teamwork-section {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+        }
+        .optional-checkpoint { border-left: 5px solid #fdcb6e; }
+        .sonderaufgabe-section {
+            background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+        }
+        .seborga-section {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .header .subtitle {
+                font-size: 1em;
+            }
+            
+            .section-title {
+                font-size: 1.4em;
+            }
+            
+            .panne-row,
+            .panne-header {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            .panne-header div {
+                text-align: left;
+            }
+            
+            .checkpoint {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .checkpoint-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .input-group input,
+            .input-group select {
+                width: 100%;
+            }
+
+            .total-section h2 {
+                font-size: 1.8em;
+            }
+
+            .total-points {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏁 1000 PFUND RALLYE 🏁</h1>
+            <div class="subtitle">Tag 4: Kaffeefahrt & Teambuilding! ☕🤝</div>
+            <div class="subtitle">Donnerstag, 24. September 2026</div>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <div class="section-title">👥 Team Info 👥</div>
+                <div class="input-group">
+                    <label>Team Name:</label>
+                    <input type="text" id="teamName" placeholder="Die Verrückten...">
+                </div>
+                <div class="input-group">
+                    <label>Partner-Team Name:</label>
+                    <input type="text" id="partnerTeam" placeholder="Mit wem fahrt ihr heute?">
+                </div>
+            </div>
+            
+            <div class="section teamwork-section">
+                <div class="section-title">🤝 DIE ZWANGSIDEE - TEAMARBEIT! 🤝</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.1em; color: #2d3436;">
+                    ⚠️ Heute fahren 2 Teams zusammen!<br>
+                    ALLE Kontrollpunkte müssen gemeinsam protokolliert werden!<br><br>
+                    <strong>AUSNAHME:</strong> Schluchten (Punkt 1, 3, 4) kann nur 1 Team fahren.<br>
+                    Punkte bekommt trotzdem beide Teams!<br>
+                    Fahren BEIDE Teams die Schlucht = 100 Extrapunkte pro Checkpoint für BEIDE!
+                </p>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">📊 TACHO STÄNDE & KILOMETER 📊</div>
+                <div class="input-group">
+                    <label>Tacho Start Tag 4:</label>
+                    <input type="number" id="tachoStart" placeholder="14017" oninput="calc()">
+                </div>
+                <div class="input-group">
+                    <label>Tacho Ende Tag 4:</label>
+                    <input type="number" id="tachoEnd" placeholder="14399" oninput="calc()">
+                </div>
+                <div class="input-group">
+                    <label>Anzeige in:</label>
+                    <select id="tachoType" onchange="calc()">
+                        <option value="miles">Meilen</option>
+                        <option value="km">Kilometer</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Multiplikator (aus Tag 1):</label>
+                    <input type="number" id="multiplier" step="0.01" value="1.00" oninput="calc()">
+                </div>
+                <div class="subsection-sum">
+                    Gefahrene Meilen: <span id="milesDisplay">0</span> × Multiplikator (<span id="multiplierDisplay">1.00</span>) = <span id="mileSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">🎯 DURCHFAHRTSKONTROLLEN 🎯</div>
+                
+                <div class="checkpoint optional-checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏔️ Gorges de la Blanche</div>
+                        <div class="checkpoint-desc">D900C, 04340 Ubaye-Serre-Ponçon - Foto vom Felsentor!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check1" onchange="calc()">
+                            <label for="check1">Erreicht?</label>
+                        </div>
+                        <div class="points-display">100</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏔️ Col de Cayolle 2326m</div>
+                        <div class="checkpoint-desc">04400 Entraunes - Seealpen</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check2" onchange="calc()">
+                            <label for="check2">Erreicht?</label>
+                        </div>
+                        <div class="points-display">100</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint optional-checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏠 Knusperhäuschen Gorges de Daluis</div>
+                        <div class="checkpoint-desc">Ein Foto vom Knusperhäuschen!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check3" onchange="calc()">
+                            <label for="check3">Erreicht?</label>
+                        </div>
+                        <div class="points-display">100</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint optional-checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏍️ Musée de la Moto</div>
+                        <div class="checkpoint-desc">04320 Entrevaux - 75 Motorräder!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check4" onchange="calc()">
+                            <label for="check4">Erreicht?</label>
+                        </div>
+                        <div class="points-display">300</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🍽️ Restaurant L'Escapade</div>
+                        <div class="checkpoint-desc">15 Boulevard du Col Marcel Pourchier, 06470 Beuil</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check5" onchange="calc()">
+                            <label for="check5">Erreicht?</label>
+                        </div>
+                        <div class="points-display">250</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">⛰️ Col de Saint-Martin 1500m</div>
+                        <div class="checkpoint-desc">06420 Valdeblore - Foto vom Graffiti!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check6" onchange="calc()">
+                            <label for="check6">Erreicht?</label>
+                        </div>
+                        <div class="points-display">50</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">⛰️ Col de Braus 1002m</div>
+                        <div class="checkpoint-desc">06380 Lucéram - Brausen!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check7" onchange="calc()">
+                            <label for="check7">Erreicht?</label>
+                        </div>
+                        <div class="points-display">50</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🌉 Viaduc du Caramel</div>
+                        <div class="checkpoint-desc">1632 Route de Sospel, 06500 Castillon</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check8" onchange="calc()">
+                            <label for="check8">Erreicht?</label>
+                        </div>
+                        <div class="points-display">100</div>
+                    </div>
+                </div>
+                
+                <div class="subsection-sum">
+                    Summe Durchfahrtskontrollen: <span id="checkpointSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <div class="section teamwork-section">
+                <div class="section-title">🎁 BONUS: BEIDE TEAMS IN SCHLUCHTEN? 🎁</div>
+                <div class="input-group">
+                    <label>Gorges de la Blanche - beide Teams?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="bonusBlanche" onchange="calc()">
+                        <label for="bonusBlanche">+100 Punkte</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Gorges de Daluis - beide Teams?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="bonusDaluis" onchange="calc()">
+                        <label for="bonusDaluis">+100 Punkte</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Musée de la Moto - beide Teams?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="bonusMuseum" onchange="calc()">
+                        <label for="bonusMuseum">+100 Punkte</label>
+                    </div>
+                </div>
+                <div class="subsection-sum">
+                    Summe Bonus: <span id="bonusSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <div class="section seborga-section">
+                <div class="section-title">🏰 SEBORGA - DAS FÜRSTENTUM! 🏰</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.1em; color: white;">
+                    Seborga, 18012 Imperia, Italien
+                </p>
+                <div class="input-group">
+                    <label style="color: white;">Seborga erreicht?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="seborga" onchange="calc()">
+                        <label for="seborga" style="color: white;">+200 Punkte</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label style="color: white;">Seborgischer Pass?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="seborga_pass" onchange="calc()">
+                        <label for="seborga_pass" style="color: white;">+100 Punkte</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label style="color: white;">Währung/Münze?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="seborga_currency" onchange="calc()">
+                        <label for="seborga_currency" style="color: white;">+50 Punkte</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label style="color: white;">Briefmarke?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="seborga_stamp" onchange="calc()">
+                        <label for="seborga_stamp" style="color: white;">+50 Punkte</label>
+                    </div>
+                </div>
+                <div class="subsection-sum">
+                    Summe Seborga: <span id="seborgaSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <div class="section sonderaufgabe-section">
+                <div class="section-title">⭐ SONDERAUFGABEN TAG 4 ⭐</div>
+                <div class="input-group">
+                    <label>🏰 Château de la Reine Jeanne?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="sonder_jeanne" onchange="calc()">
+                        <label for="sonder_jeanne">+150 Punkte</label>
+                    </div>
+                </div>
+                <div class="subsection-sum">
+                    Summe Sonderaufgaben: <span id="sonderSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">🏨 TAGESZIEL ERREICHT? 🏨</div>
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🛏️ Hotel bis 23:59 erreicht?</div>
+                        <div class="checkpoint-desc">Residence Dell'Angelo, Ospedaletti</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="hotelReached" onchange="calc()">
+                            <label for="hotelReached">Geschafft!</label>
+                        </div>
+                        <div class="points-display">100</div>
+                    </div>
+                </div>
+                <div class="subsection-sum">
+                    Summe Tagesziel: <span id="hotelSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <div class="section special-section">
+                <div class="section-title">🔧 PANNEN & REPARATUREN 🔧</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.1em;">
+                    Berechnung: (Zeit in Minuten × 2) + Kosten = Punkte pro Panne
+                </p>
+                
+                <div class="panne-header">
+                    <div>Problem / Beschreibung</div>
+                    <div style="text-align: center;">Zeit (Min)</div>
+                    <div style="text-align: center;">Kosten (€/£)</div>
+                    <div style="text-align: center;">Punkte</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne1desc" placeholder="z.B. Murmeltier überfahren">
+                    <input type="number" id="panne1time" value="0" min="0" oninput="calc()">
+                    <input type="number" id="panne1cost" value="0" min="0" step="0.01" oninput="calc()">
+                    <div class="panne-points" id="panne1points">0</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne2desc" placeholder="z.B. Reifenpanne">
+                    <input type="number" id="panne2time" value="0" min="0" oninput="calc()">
+                    <input type="number" id="panne2cost" value="0" min="0" step="0.01" oninput="calc()">
+                    <div class="panne-points" id="panne2points">0</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne3desc" placeholder="z.B. Ölverlust">
+                    <input type="number" id="panne3time" value="0" min="0" oninput="calc()">
+                    <input type="number" id="panne3cost" value="0" min="0" step="0.01" oninput="calc()">
+                    <div class="panne-points" id="panne3points">0</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne4desc" placeholder="z.B. Kühlwasser">
+                    <input type="number" id="panne4time" value="0" min="0" oninput="calc()">
+                    <input type="number" id="panne4cost" value="0" min="0" step="0.01" oninput="calc()">
+                    <div class="panne-points" id="panne4points">0</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne5desc" placeholder="Weitere Pannen...">
+                    <input type="number" id="panne5time" value="0" min="0" oninput="calc()">
+                    <input type="number" id="panne5cost" value="0" min="0" step="0.01" oninput="calc()">
+                    <div class="panne-points" id="panne5points">0</div>
+                </div>
+                
+                <div class="subsection-sum">
+                    Summe Pannen & Reparaturen: <span id="panneSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">🎁 EXTRAPUNKTE VOM BERNIE 🎁</div>
+                <div class="input-group">
+                    <label>Extrapunkte für besondere Blödheiten:</label>
+                    <input type="number" id="extraPunkte" value="0" oninput="calc()">
+                </div>
+                <div class="subsection-sum">
+                    Summe Extrapunkte: <span id="extraSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <div class="total-section">
+                <h2>🎊 GESAMTPUNKTE TAG 4 🎊</h2>
+                <div class="total-points" id="totalPoints">0</div>
+                <div class="emoji">🏆☕🎉</div>
+                <button class="submit-btn" onclick="sendEmail()">📧 ERGEBNIS PER MAIL SENDEN 📧</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calc() {
+            let total = 0;
+            
+            const tachoStart = parseFloat(document.getElementById('tachoStart').value) || 0;
+            const tachoEnd = parseFloat(document.getElementById('tachoEnd').value) || 0;
+            const tachoType = document.getElementById('tachoType').value;
+            const multiplier = parseFloat(document.getElementById('multiplier').value) || 1.0;
+            
+            let distance = tachoEnd - tachoStart;
+            let miles = tachoType === 'km' ? distance / 1.6 : distance;
+            const milePoints = Math.round(miles * multiplier);
+            total += milePoints;
+            
+            document.getElementById('milesDisplay').textContent = miles.toFixed(2);
+            document.getElementById('multiplierDisplay').textContent = multiplier.toFixed(2);
+            document.getElementById('mileSum').textContent = milePoints;
+            
+            const cps = [{id:'check1',p:100},{id:'check2',p:100},{id:'check3',p:100},{id:'check4',p:300},{id:'check5',p:250},{id:'check6',p:50},{id:'check7',p:50},{id:'check8',p:100}];
+            let cpTotal = 0;
+            cps.forEach(cp => { if(document.getElementById(cp.id).checked) cpTotal += cp.p; });
+            total += cpTotal;
+            document.getElementById('checkpointSum').textContent = cpTotal;
+            
+            let bonusTotal = 0;
+            if(document.getElementById('bonusBlanche').checked) bonusTotal += 100;
+            if(document.getElementById('bonusDaluis').checked) bonusTotal += 100;
+            if(document.getElementById('bonusMuseum').checked) bonusTotal += 100;
+            total += bonusTotal;
+            document.getElementById('bonusSum').textContent = bonusTotal;
+            
+            let seborgaTotal = 0;
+            if(document.getElementById('seborga').checked) seborgaTotal += 200;
+            if(document.getElementById('seborga_pass').checked) seborgaTotal += 100;
+            if(document.getElementById('seborga_currency').checked) seborgaTotal += 50;
+            if(document.getElementById('seborga_stamp').checked) seborgaTotal += 50;
+            total += seborgaTotal;
+            document.getElementById('seborgaSum').textContent = seborgaTotal;
+            
+            let sonderTotal = 0;
+            if(document.getElementById('sonder_jeanne').checked) sonderTotal += 150;
+            total += sonderTotal;
+            document.getElementById('sonderSum').textContent = sonderTotal;
+            
+            let hotelTotal = document.getElementById('hotelReached').checked ? 100 : 0;
+            total += hotelTotal;
+            document.getElementById('hotelSum').textContent = hotelTotal;
+            
+            let panneTotal = 0;
+            for(let i=1; i<=5; i++) {
+                const t = parseInt(document.getElementById('panne'+i+'time').value) || 0;
+                const c = parseFloat(document.getElementById('panne'+i+'cost').value) || 0;
+                const pts = t*2 + Math.round(c);
+                document.getElementById('panne'+i+'points').textContent = pts;
+                panneTotal += pts;
+            }
+            total += panneTotal;
+            document.getElementById('panneSum').textContent = panneTotal;
+            
+            const extra = parseInt(document.getElementById('extraPunkte').value) || 0;
+            total += extra;
+            document.getElementById('extraSum').textContent = extra;
+            
+            document.getElementById('totalPoints').textContent = total;
+        }
+        
+        function sendEmail() {
+            const teamName = document.getElementById('teamName').value || 'Namenloses Team';
+            const partnerTeam = document.getElementById('partnerTeam').value || 'Kein Partner';
+            const multiplier = document.getElementById('multiplier').value;
+            const totalPoints = document.getElementById('totalPoints').textContent;
+            
+            const subject = `1000 Pfund Rallye - Tag 4: ${teamName}`;
+            const body = `🏁 1000 PFUND RALLYE 🏁%0D%0A%0D%0A` +
+                        `Team: ${teamName}%0D%0A` +
+                        `Partner-Team: ${partnerTeam}%0D%0A` +
+                        `Tag: 4 - Donnerstag, 24. September 2026%0D%0A%0D%0A` +
+                        `Multiplikator: ${multiplier}%0D%0A%0D%0A` +
+                        `🎊 GESAMTPUNKTE: ${totalPoints} 🎊`;
+            
+            window.location.href = `mailto:fischervorchdorf@gmx.at?subject=${subject}&body=${body}`;
+        }
+        
+        calc();
+    </script>
+</body>
+</html>

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏁 1000 Pfund Rallye - Tag 7 Wertung 🏁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 2.5em;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border-radius: 15px;
+            border: 3px dashed #f5576c;
+        }
+        
+        .section-title {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 1.8em;
+            color: #d63031;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .input-group label {
+            flex: 1;
+            font-weight: bold;
+            color: #2d3436;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .input-group input[type="number"],
+        .input-group input[type="text"],
+        .input-group select {
+            width: 150px;
+            padding: 10px;
+            border: 2px solid #f5576c;
+            border-radius: 10px;
+            font-size: 1em;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .checkpoint {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border-left: 5px solid #0984e3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .checkpoint-info {
+            flex: 1;
+        }
+        
+        .checkpoint-name {
+            font-weight: bold;
+            color: #2d3436;
+            font-size: 1.1em;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .checkpoint-desc {
+            color: #636e72;
+            font-size: 0.9em;
+            margin-top: 5px;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .checkpoint-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .checkbox-wrapper label {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+        
+        .points-display {
+            background: #00b894;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            min-width: 80px;
+            text-align: center;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .subsection-sum {
+            background: #fdcb6e;
+            color: #2d3436;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: right;
+            font-size: 1.3em;
+            font-weight: bold;
+            border: 3px solid #e17055;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .panne-row {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            border-left: 5px solid #d63031;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .panne-row input[type="text"] {
+            width: 100%;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .panne-row input[type="number"] {
+            width: 100%;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .panne-header {
+            background: #2d3436;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 10px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .panne-points {
+            background: #e17055;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .total-section {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            border: 5px solid #e17055;
+        }
+        
+        .total-section h2 {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 2.5em;
+            color: #d63031;
+            margin-bottom: 20px;
+        }
+        
+        .total-points {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 4em;
+            color: #00b894;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+        
+        .submit-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .emoji {
+            font-size: 2em;
+            margin: 0 10px;
+        }
+        
+        .special-section {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+        }
+        
+        .special-section input,
+        .special-section select {
+            background: white;
+        }
+        
+        .special-checkpoint {
+            border-left: 5px solid #e84393;
+        }
+        
+        .pass-checkpoint {
+            border-left: 5px solid #00b894;
+        }
+        
+        .sonderaufgabe-section {
+            background: linear-gradient(135deg, #fd79a8 0%, #fdcb6e 100%);
+        }
+        
+        .finale-section {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            border: 5px solid #d63031;
+        }
+        
+        /* Mobile Optimierungen */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .header .subtitle {
+                font-size: 1em;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .section {
+                padding: 15px;
+            }
+            
+            .section-title {
+                font-size: 1.3em;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .input-group input[type="number"],
+            .input-group input[type="text"],
+            .input-group select {
+                width: 100%;
+            }
+            
+            .checkpoint {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .checkpoint-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .checkbox-wrapper {
+                justify-content: space-between;
+            }
+            
+            .points-display {
+                width: 100%;
+            }
+            
+            .panne-header,
+            .panne-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .panne-header div {
+                text-align: left;
+            }
+            
+            .subsection-sum {
+                font-size: 1.1em;
+            }
+            
+            .total-section h2 {
+                font-size: 1.8em;
+            }
+            
+            .total-points {
+                font-size: 2.5em;
+            }
+            
+            .submit-btn {
+                padding: 15px 30px;
+                font-size: 1.2em;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏁 1000 PFUND RALLYE 🏁</h1>
+            <div class="subtitle">Tag 7: DAS GROSSE FINALE! 🎉🏆</div>
+            <div class="subtitle">Sonntag, 27. September 2026</div>
+            <div class="subtitle" style="margin-top: 10px; font-size: 1.1em;">
+                Meran → Trofaiach - Die letzte Etappe!
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Team Info -->
+            <div class="section finale-section">
+                <div class="section-title">👥 Team Info 👥</div>
+                <div class="input-group">
+                    <label>Team Name:</label>
+                    <input type="text" id="teamName" placeholder="Die Verrückten...">
+                </div>
+                <p style="text-align: center; margin-top: 15px; font-size: 1.1em; font-style: italic;">
+                    "Heute ist nicht alle Tage – ich komm wieder, keine Frage!" 🎭
+                </p>
+            </div>
+            
+            <!-- Tacho Stände -->
+            <div class="section">
+                <div class="section-title">📊 TACHO STÄNDE & KILOMETER 📊</div>
+                <div class="input-group">
+                    <label>Tacho Start Tag 7:</label>
+                    <input type="number" id="tachoStart" placeholder="15394" oninput="recalculate()">
+                </div>
+                <div class="input-group">
+                    <label>Tacho Ende Tag 7 (ZIEL!):</label>
+                    <input type="number" id="tachoEnd" placeholder="15884" oninput="recalculate()">
+                </div>
+                <div class="input-group">
+                    <label>Anzeige in:</label>
+                    <select id="tachoType" onchange="recalculate()">
+                        <option value="miles">Meilen</option>
+                        <option value="km">Kilometer</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Multiplikator (aus Tag 1):</label>
+                    <input type="number" id="multiplier" step="0.01" value="1.00" oninput="recalculate()">
+                </div>
+                <div class="subsection-sum">
+                    Gefahrene Meilen: <span id="milesDisplay">0</span> × Multiplikator (<span id="multiplierDisplay">1.00</span>) = <span id="mileSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <!-- Durchfahrtskontrollen -->
+            <div class="section">
+                <div class="section-title">🏔️ DURCHFAHRTSKONTROLLEN 🏔️</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.1em; color: #d63031; font-weight: bold;">
+                    ⚠️ ACHTUNG: Die Kontrollpunkte sind NICHT sortiert - ihr dürft selbst entscheiden! ⚠️
+                </p>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🪑 Trauttmansdorffer Thronsessel</div>
+                        <div class="checkpoint-desc">39022 Algund, Südtirol - Start in Meran!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check1" onchange="recalculate()">
+                            <label for="check1">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points1">50</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏰 Burg Karneid</div>
+                        <div class="checkpoint-desc">39053 Karneid, Südtirol - Thront über Bozen</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check2" onchange="recalculate()">
+                            <label for="check2">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points2">50</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint special-checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏔️ Karersee am Karerpass 1745m</div>
+                        <div class="checkpoint-desc">Karerseestraße, 39056 Welschnofen - SONDERPUNKT!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check3" onchange="recalculate()">
+                            <label for="check3">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points3">200</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">📸 Foto vom Karerpass</div>
+                        <div class="checkpoint-desc">Passo di Costalunga, 1745m</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check4" onchange="recalculate()">
+                            <label for="check4">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points4">100</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint pass-checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">⛰️ Nigerpass 1690m</div>
+                        <div class="checkpoint-desc">Via S. Cipriano, 39050 Nova Levante BZ - Passo Nigra</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check5" onchange="recalculate()">
+                            <label for="check5">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points5">100</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🗿 Erdpyramiden</div>
+                        <div class="checkpoint-desc">SP73, 11, 39054 Longomoso BZ, Italien</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check6" onchange="recalculate()">
+                            <label for="check6">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points6">100</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint special-checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">💧 Cascate Barbiano (Wasserfall)</div>
+                        <div class="checkpoint-desc">Ganderbach, 39040 Barbian - SONDERPUNKT!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check7" onchange="recalculate()">
+                            <label for="check7">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points7">200</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏰 Fischburg</div>
+                        <div class="checkpoint-desc">La Selva Str., 39048 Wolkenstein in Gröden</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check8" onchange="recalculate()">
+                            <label for="check8">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points8">50</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">⛪ Cappella di San Maurizio (2004 erbaut)</div>
+                        <div class="checkpoint-desc">SS243, 2, 39048 Selva di Val Gardena BZ</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check9" onchange="recalculate()">
+                            <label for="check9">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points9">100</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint pass-checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏔️ Passo di Campolongo 1875m</div>
+                        <div class="checkpoint-desc">SP244, 39033 Corvara in Badia BZ - Bild nachstellen!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check10" onchange="recalculate()">
+                            <label for="check10">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points10">100</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint pass-checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">⛰️ Passo di Pordoi 2239m</div>
+                        <div class="checkpoint-desc">38032 Canazei Province of Trento - Dolomiten</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check11" onchange="recalculate()">
+                            <label for="check11">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points11">100</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏔️ Furkelsattel 1789m - Foto vom Peststöckl!</div>
+                        <div class="checkpoint-desc">Furkelpass, 39030 Enneberg, Südtirol</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check12" onchange="recalculate()">
+                            <label for="check12">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points12">50</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint pass-checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">⛰️ Stallersattel 2052m</div>
+                        <div class="checkpoint-desc">Defreggental Landesstraße, 9963 - Verbindet Südtirol mit Osttirol</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check13" onchange="recalculate()">
+                            <label for="check13">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points13">50</div>
+                    </div>
+                </div>
+                
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🏰 Burg Kaprun</div>
+                        <div class="checkpoint-desc">Schloßstraße 55, 5710 Kaprun - Vor dem Ziel!</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="check14" onchange="recalculate()">
+                            <label for="check14">Erreicht?</label>
+                        </div>
+                        <div class="points-display" id="points14">100</div>
+                    </div>
+                </div>
+                
+                <div class="subsection-sum">
+                    Summe Durchfahrtskontrollen: <span id="checkpointSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <!-- Sonderaufgaben -->
+            <div class="section sonderaufgabe-section">
+                <div class="section-title">💦 SONDERAUFGABEN TAG 7 💦</div>
+                
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.2em; color: #2d3436;">
+                    <strong>200 Punkte für nasse Füße!</strong>
+                </p>
+                
+                <div class="input-group">
+                    <label>Nasse Füße im Karersee bekommen?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="sonder_karersee" onchange="recalculate()">
+                        <label for="sonder_karersee">+200 Punkte</label>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Nasse Füße beim Wasserfall Barbiano?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="sonder_wasserfall" onchange="recalculate()">
+                        <label for="sonder_wasserfall">+200 Punkte</label>
+                    </div>
+                </div>
+                
+                <div class="input-group" style="margin-top: 30px;">
+                    <label>🍺 Pinzgau Bräu - Leere Flasche mitgebracht?</label>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="sonder_pinzgau" onchange="recalculate()">
+                        <label for="sonder_pinzgau">+200 Punkte</label>
+                    </div>
+                </div>
+                
+                <div class="subsection-sum">
+                    Summe Sonderaufgaben: <span id="sonderSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <!-- Ziel erreicht -->
+            <div class="section finale-section">
+                <div class="section-title">🏁 ZIEL ERREICHT! 🏁</div>
+                <div class="checkpoint">
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-name">🎯 ZIEL in Trofaiach erreicht!</div>
+                        <div class="checkpoint-desc">Bernie schwenkt die Zielfahne! 🎉</div>
+                    </div>
+                    <div class="checkpoint-controls">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="zielReached" onchange="recalculate()">
+                            <label for="zielReached">GESCHAFFT!</label>
+                        </div>
+                        <div class="points-display" id="zielPoints">500</div>
+                    </div>
+                </div>
+                <div class="subsection-sum">
+                    Summe Ziel: <span id="zielSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <!-- Pannen & Ersatzteile -->
+            <div class="section special-section">
+                <div class="section-title">🔧 PANNEN & REPARATUREN 🔧</div>
+                <p style="text-align: center; margin-bottom: 20px; font-size: 1.1em;">
+                    Berechnung: (Zeit in Minuten × 2) + Kosten = Punkte pro Panne
+                </p>
+                
+                <div class="panne-header">
+                    <div>Problem / Beschreibung</div>
+                    <div style="text-align: center;">Zeit (Min)</div>
+                    <div style="text-align: center;">Kosten (€/£)</div>
+                    <div style="text-align: center;">Punkte</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne1desc" placeholder="z.B. Keilriemen gerissen">
+                    <input type="number" id="panne1time" value="0" min="0" oninput="recalculate()">
+                    <input type="number" id="panne1cost" value="0" min="0" step="0.01" oninput="recalculate()">
+                    <div class="panne-points" id="panne1points">0</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne2desc" placeholder="z.B. Reifenpanne">
+                    <input type="number" id="panne2time" value="0" min="0" oninput="recalculate()">
+                    <input type="number" id="panne2cost" value="0" min="0" step="0.01" oninput="recalculate()">
+                    <div class="panne-points" id="panne2points">0</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne3desc" placeholder="z.B. Überhitzung">
+                    <input type="number" id="panne3time" value="0" min="0" oninput="recalculate()">
+                    <input type="number" id="panne3cost" value="0" min="0" step="0.01" oninput="recalculate()">
+                    <div class="panne-points" id="panne3points">0</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne4desc" placeholder="z.B. Kühlwasser">
+                    <input type="number" id="panne4time" value="0" min="0" oninput="recalculate()">
+                    <input type="number" id="panne4cost" value="0" min="0" step="0.01" oninput="recalculate()">
+                    <div class="panne-points" id="panne4points">0</div>
+                </div>
+                
+                <div class="panne-row">
+                    <input type="text" id="panne5desc" placeholder="Weitere Pannen hier eintragen...">
+                    <input type="number" id="panne5time" value="0" min="0" oninput="recalculate()">
+                    <input type="number" id="panne5cost" value="0" min="0" step="0.01" oninput="recalculate()">
+                    <div class="panne-points" id="panne5points">0</div>
+                </div>
+                
+                <div class="subsection-sum">
+                    Summe Pannen & Reparaturen: <span id="panneSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <!-- Extra Punkte -->
+            <div class="section">
+                <div class="section-title">🎁 EXTRAPUNKTE VOM BERNIE 🎁</div>
+                <div class="input-group">
+                    <label>Extrapunkte für besondere Blödheiten:</label>
+                    <input type="number" id="extraPunkte" value="0" oninput="recalculate()">
+                </div>
+                <div class="subsection-sum">
+                    Summe Extrapunkte: <span id="extraSum">0</span> Punkte
+                </div>
+            </div>
+            
+            <!-- Gesamtwertung -->
+            <div class="total-section">
+                <h2>🎊 GESAMTPUNKTE TAG 7 🎊</h2>
+                <h3 style="font-size: 1.5em; margin-bottom: 20px;">DAS GROSSE FINALE!</h3>
+                <div class="total-points" id="totalPoints">0</div>
+                <div class="emoji">🏆🏁🎉</div>
+                <p style="font-size: 1.3em; margin-top: 20px; font-style: italic;">
+                    "Heute ist nicht alle Tage – ich komm wieder, keine Frage!" 🎭
+                </p>
+                <button class="submit-btn" onclick="sendEmail()">📧 ERGEBNIS PER MAIL SENDEN 📧</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function recalculate() {
+            let total = 0;
+            
+            const tachoStart = parseFloat(document.getElementById('tachoStart').value) || 0;
+            const tachoEnd = parseFloat(document.getElementById('tachoEnd').value) || 0;
+            const tachoType = document.getElementById('tachoType').value;
+            const multiplier = parseFloat(document.getElementById('multiplier').value) || 1.0;
+            
+            let distance = tachoEnd - tachoStart;
+            let miles = tachoType === 'km' ? distance / 1.6 : distance;
+            const milePoints = Math.round(miles * multiplier);
+            total += milePoints;
+            
+            document.getElementById('milesDisplay').textContent = miles.toFixed(2);
+            document.getElementById('multiplierDisplay').textContent = multiplier.toFixed(2);
+            document.getElementById('mileSum').textContent = milePoints;
+            
+            const cps = [
+                {id:'check1',p:50},
+                {id:'check2',p:50},
+                {id:'check3',p:200},
+                {id:'check4',p:100},
+                {id:'check5',p:100},
+                {id:'check6',p:100},
+                {id:'check7',p:200},
+                {id:'check8',p:50},
+                {id:'check9',p:100},
+                {id:'check10',p:100},
+                {id:'check11',p:100},
+                {id:'check12',p:50},
+                {id:'check13',p:50},
+                {id:'check14',p:100}
+            ];
+            let cpTotal = 0;
+            cps.forEach(cp => { if(document.getElementById(cp.id).checked) cpTotal += cp.p; });
+            total += cpTotal;
+            document.getElementById('checkpointSum').textContent = cpTotal;
+            
+            let sonderTotal = 0;
+            if(document.getElementById('sonder_karersee').checked) sonderTotal += 200;
+            if(document.getElementById('sonder_wasserfall').checked) sonderTotal += 200;
+            if(document.getElementById('sonder_pinzgau').checked) sonderTotal += 200;
+            total += sonderTotal;
+            document.getElementById('sonderSum').textContent = sonderTotal;
+            
+            let zielTotal = document.getElementById('zielReached').checked ? 500 : 0;
+            total += zielTotal;
+            document.getElementById('zielSum').textContent = zielTotal;
+            
+            let panneTotal = 0;
+            for(let i=1; i<=5; i++) {
+                const t = parseInt(document.getElementById('panne'+i+'time').value) || 0;
+                const c = parseFloat(document.getElementById('panne'+i+'cost').value) || 0;
+                const pts = t*2 + Math.round(c);
+                document.getElementById('panne'+i+'points').textContent = pts;
+                panneTotal += pts;
+            }
+            total += panneTotal;
+            document.getElementById('panneSum').textContent = panneTotal;
+            
+            const extra = parseInt(document.getElementById('extraPunkte').value) || 0;
+            total += extra;
+            document.getElementById('extraSum').textContent = extra;
+            
+            document.getElementById('totalPoints').textContent = total;
+        }
+        
+        function sendEmail() {
+            const teamName = document.getElementById('teamName').value || 'Namenloses Team';
+            
+            let emailBody = '=== TAG 7 WERTUNG - DAS FINALE ===\n\n';
+            emailBody += 'Team: ' + teamName + '\n';
+            emailBody += 'Datum: Sonntag, 27. September 2026\n\n';
+            
+            emailBody += '--- KILOMETER ---\n';
+            const tachoStart = document.getElementById('tachoStart').value || '0';
+            const tachoEnd = document.getElementById('tachoEnd').value || '0';
+            const tachoType = document.getElementById('tachoType').value === 'km' ? 'Kilometer' : 'Meilen';
+            emailBody += 'Tacho Start: ' + tachoStart + ' ' + tachoType + '\n';
+            emailBody += 'Tacho Ende: ' + tachoEnd + ' ' + tachoType + '\n';
+            emailBody += 'Punkte: ' + document.getElementById('mileSum').textContent + '\n\n';
+            
+            emailBody += '--- DURCHFAHRTSKONTROLLEN ---\n';
+            const checkpoints = [
+                {id:'check1', name:'Trauttmansdorffer Thronsessel', points:50},
+                {id:'check2', name:'Burg Karneid', points:50},
+                {id:'check3', name:'Karersee am Karerpass', points:200},
+                {id:'check4', name:'Foto vom Karerpass', points:100},
+                {id:'check5', name:'Nigerpass 1690m', points:100},
+                {id:'check6', name:'Erdpyramiden', points:100},
+                {id:'check7', name:'Cascate Barbiano (Wasserfall)', points:200},
+                {id:'check8', name:'Fischburg', points:50},
+                {id:'check9', name:'Cappella di San Maurizio', points:100},
+                {id:'check10', name:'Passo di Campolongo 1875m', points:100},
+                {id:'check11', name:'Passo di Pordoi 2239m', points:100},
+                {id:'check12', name:'Furkelsattel 1789m', points:50},
+                {id:'check13', name:'Stallersattel 2052m', points:50},
+                {id:'check14', name:'Burg Kaprun', points:100}
+            ];
+            checkpoints.forEach(cp => {
+                if(document.getElementById(cp.id).checked) {
+                    emailBody += '✓ ' + cp.name + ': ' + cp.points + ' Punkte\n';
+                }
+            });
+            emailBody += 'Summe: ' + document.getElementById('checkpointSum').textContent + ' Punkte\n\n';
+            
+            emailBody += '--- SONDERAUFGABEN ---\n';
+            if(document.getElementById('sonder_karersee').checked) {
+                emailBody += '✓ Nasse Füße im Karersee: 200 Punkte\n';
+            }
+            if(document.getElementById('sonder_wasserfall').checked) {
+                emailBody += '✓ Nasse Füße beim Wasserfall: 200 Punkte\n';
+            }
+            if(document.getElementById('sonder_pinzgau').checked) {
+                emailBody += '✓ Pinzgau Bräu Flasche: 200 Punkte\n';
+            }
+            emailBody += 'Summe: ' + document.getElementById('sonderSum').textContent + ' Punkte\n\n';
+            
+            emailBody += '--- ZIEL ---\n';
+            if(document.getElementById('zielReached').checked) {
+                emailBody += '✓ ZIEL in Trofaiach erreicht: 500 Punkte\n\n';
+            } else {
+                emailBody += '✗ Ziel nicht erreicht: 0 Punkte\n\n';
+            }
+            
+            emailBody += '--- PANNEN & REPARATUREN ---\n';
+            for(let i=1; i<=5; i++) {
+                const desc = document.getElementById('panne'+i+'desc').value;
+                const time = document.getElementById('panne'+i+'time').value;
+                const cost = document.getElementById('panne'+i+'cost').value;
+                const pts = document.getElementById('panne'+i+'points').textContent;
+                if(desc || time > 0 || cost > 0) {
+                    emailBody += desc + ': ' + time + ' Min, ' + cost + ' €/£ = ' + pts + ' Punkte\n';
+                }
+            }
+            emailBody += 'Summe: ' + document.getElementById('panneSum').textContent + ' Punkte\n\n';
+            
+            emailBody += '--- EXTRAPUNKTE ---\n';
+            const extra = document.getElementById('extraPunkte').value || '0';
+            emailBody += 'Extrapunkte vom Bernie: ' + extra + ' Punkte\n\n';
+            
+            emailBody += '======================\n';
+            emailBody += 'GESAMTPUNKTE TAG 7: ' + document.getElementById('totalPoints').textContent + ' PUNKTE\n';
+            emailBody += '======================\n\n';
+            emailBody += '"Heute ist nicht alle Tage - ich komm wieder, keine Frage!"\n';
+            
+            const subject = 'Tag 7 FINALE - ' + teamName + ' - ' + document.getElementById('totalPoints').textContent + ' Punkte';
+            window.location.href = 'mailto:fischervorchdorf@gmx.at?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(emailBody);
+        }
+        
+        recalculate();
+    </script>
+</body>
+</html>

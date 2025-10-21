@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 1000 Pfund Rallye - Gesamtwertung 🏆</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 25%, #f06595 50%, #cc5de8 75%, #845ef7 100%);
+            background-size: 400% 400%;
+            padding: 20px;
+            min-height: 100vh;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #845ef7 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+            border-radius: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 5px solid #ffd43b;
+        }
+        
+        .header h1 {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 1.5em;
+        }
+
+        .leaderboard-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 5px solid #ffd43b;
+        }
+
+        .leaderboard-title {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 2.5em;
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-table thead {
+            background: linear-gradient(135deg, #ff6b6b 0%, #845ef7 100%);
+            color: white;
+        }
+
+        .leaderboard-table th {
+            padding: 15px;
+            text-align: left;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 1.2em;
+        }
+
+        .leaderboard-table td {
+            padding: 15px;
+            border-bottom: 2px solid #f1f3f5;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+        }
+
+        .leaderboard-table tbody tr:hover {
+            background: #fff5f5;
+        }
+
+        .rank-cell {
+            font-weight: bold;
+            font-size: 1.5em;
+            width: 80px;
+            text-align: center;
+        }
+
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+
+        .team-name-cell {
+            font-weight: bold;
+            color: #845ef7;
+            font-size: 1.2em;
+        }
+
+        .points-cell {
+            font-weight: bold;
+            font-size: 1.3em;
+            color: #00b894;
+            text-align: right;
+        }
+
+        .day-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 4px solid #ffd43b;
+        }
+
+        .day-title {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            font-size: 2em;
+            color: #845ef7;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .team-input-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .team-input {
+            background: linear-gradient(135deg, #fff5f5 0%, #f0f9ff 100%);
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #ffd43b;
+        }
+
+        .team-input label {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            display: block;
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .team-input input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .team-input input:focus {
+            outline: none;
+            border-color: #845ef7;
+        }
+
+        .save-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .save-button:hover {
+            transform: scale(1.05);
+        }
+
+        .reset-button {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .reset-button:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 1024px) {
+            .team-input-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header p {
+                font-size: 1.1em;
+            }
+
+            .leaderboard-title {
+                font-size: 1.8em;
+            }
+
+            .team-input-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .leaderboard-table {
+                font-size: 0.9em;
+            }
+
+            .leaderboard-table th,
+            .leaderboard-table td {
+                padding: 10px 5px;
+            }
+
+            .rank-cell {
+                font-size: 1.2em;
+                width: 50px;
+            }
+
+            .team-name-cell {
+                font-size: 1em;
+            }
+
+            .points-cell {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 GESAMTWERTUNG 🏆</h1>
+            <p>Die ultimative Rangliste der 1000 Pfund Rallye!</p>
+        </div>
+
+        <!-- RANGLISTE -->
+        <div class="leaderboard-section">
+            <h2 class="leaderboard-title">🥇 Aktuelle Rangliste 🥇</h2>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>Platz</th>
+                        <th>Team</th>
+                        <th style="text-align: right;">Gesamtpunkte</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboard-body">
+                    <!-- Wird dynamisch gefüllt -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- TAG 1: MONTAG -->
+        <div class="day-section">
+            <h3 class="day-title">📅 Montag, 21. September 2026</h3>
+            <div class="team-input-grid" id="day1-inputs">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </div>
+
+        <!-- TAG 2: DIENSTAG -->
+        <div class="day-section">
+            <h3 class="day-title">📅 Dienstag, 22. September 2026</h3>
+            <div class="team-input-grid" id="day2-inputs">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </div>
+
+        <!-- TAG 3: MITTWOCH -->
+        <div class="day-section">
+            <h3 class="day-title">📅 Mittwoch, 23. September 2026</h3>
+            <div class="team-input-grid" id="day3-inputs">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </div>
+
+        <!-- TAG 4: DONNERSTAG -->
+        <div class="day-section">
+            <h3 class="day-title">📅 Donnerstag, 24. September 2026</h3>
+            <div class="team-input-grid" id="day4-inputs">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </div>
+
+        <!-- TAG 5: FREITAG -->
+        <div class="day-section">
+            <h3 class="day-title">📅 Freitag, 25. September 2026</h3>
+            <div class="team-input-grid" id="day5-inputs">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </div>
+
+        <!-- TAG 6: SAMSTAG -->
+        <div class="day-section">
+            <h3 class="day-title">📅 Samstag, 26. September 2026</h3>
+            <div class="team-input-grid" id="day6-inputs">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </div>
+
+        <!-- TAG 7: SONNTAG -->
+        <div class="day-section">
+            <h3 class="day-title">📅 Sonntag, 27. September 2026</h3>
+            <div class="team-input-grid" id="day7-inputs">
+                <!-- Wird dynamisch gefüllt -->
+            </div>
+        </div>
+
+        <button class="save-button" onclick="saveAllData()">💾 Alle Daten Speichern</button>
+        <button class="reset-button" onclick="resetAllData()">🔄 Alle Daten Zurücksetzen</button>
+    </div>
+
+    <script>
+        const teamNames = [
+            'Team 1', 'Team 2', 'Team 3', 'Team 4', 'Team 5',
+            'Team 6', 'Team 7', 'Team 8', 'Team 9', 'Team 10',
+            'Team 11', 'Team 12', 'Team 13', 'Team 14', 'Team 15'
+        ];
+
+        const days = ['day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7'];
+
+        // Initialisierung
+        function init() {
+            // Erstelle Input-Felder für alle Tage
+            days.forEach((day, dayIndex) => {
+                const container = document.getElementById(`${day}-inputs`);
+                teamNames.forEach((teamName, teamIndex) => {
+                    const teamNum = teamIndex + 1;
+                    const div = document.createElement('div');
+                    div.className = 'team-input';
+                    div.innerHTML = `
+                        <label>🏁 ${teamName}</label>
+                        <input type="number" 
+                               id="${day}-team${teamNum}" 
+                               placeholder="0" 
+                               value="0"
+                               oninput="calculateLeaderboard()">
+                    `;
+                    container.appendChild(div);
+                });
+            });
+
+            // Lade gespeicherte Daten
+            loadData();
+            
+            // Berechne Rangliste
+            calculateLeaderboard();
+        }
+
+        // Speichere alle Daten
+        function saveAllData() {
+            const data = {};
+            days.forEach(day => {
+                teamNames.forEach((_, teamIndex) => {
+                    const teamNum = teamIndex + 1;
+                    const input = document.getElementById(`${day}-team${teamNum}`);
+                    const key = `${day}-team${teamNum}`;
+                    data[key] = parseInt(input.value) || 0;
+                });
+            });
+            
+            localStorage.setItem('rallyeData', JSON.stringify(data));
+            alert('✅ Daten erfolgreich gespeichert!');
+        }
+
+        // Lade gespeicherte Daten
+        function loadData() {
+            const savedData = localStorage.getItem('rallyeData');
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                Object.keys(data).forEach(key => {
+                    const input = document.getElementById(key);
+                    if (input) {
+                        input.value = data[key];
+                    }
+                });
+            }
+        }
+
+        // Berechne Rangliste
+        function calculateLeaderboard() {
+            const teams = [];
+            
+            teamNames.forEach((teamName, teamIndex) => {
+                const teamNum = teamIndex + 1;
+                let totalPoints = 0;
+                
+                days.forEach(day => {
+                    const input = document.getElementById(`${day}-team${teamNum}`);
+                    totalPoints += parseInt(input.value) || 0;
+                });
+                
+                teams.push({
+                    name: teamName,
+                    points: totalPoints
+                });
+            });
+            
+            // Sortiere nach Punkten (höchste zuerst)
+            teams.sort((a, b) => b.points - a.points);
+            
+            // Update Ranglisten-Tabelle
+            const tbody = document.getElementById('leaderboard-body');
+            tbody.innerHTML = '';
+            
+            teams.forEach((team, index) => {
+                const rank = index + 1;
+                const row = document.createElement('tr');
+                
+                let rankClass = '';
+                let medal = '';
+                if (rank === 1) {
+                    rankClass = 'rank-1';
+                    medal = '🥇';
+                } else if (rank === 2) {
+                    rankClass = 'rank-2';
+                    medal = '🥈';
+                } else if (rank === 3) {
+                    rankClass = 'rank-3';
+                    medal = '🥉';
+                }
+                
+                row.innerHTML = `
+                    <td class="rank-cell ${rankClass}">${medal} ${rank}.</td>
+                    <td class="team-name-cell">${team.name}</td>
+                    <td class="points-cell">${team.points.toLocaleString()} Punkte</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+        }
+
+        // Setze alle Daten zurück
+        function resetAllData() {
+            if (confirm('⚠️ Wirklich ALLE Daten löschen? Dies kann nicht rückgängig gemacht werden!')) {
+                localStorage.removeItem('rallyeData');
+                
+                days.forEach(day => {
+                    teamNames.forEach((_, teamIndex) => {
+                        const teamNum = teamIndex + 1;
+                        const input = document.getElementById(`${day}-team${teamNum}`);
+                        if (input) {
+                            input.value = 0;
+                        }
+                    });
+                });
+                
+                calculateLeaderboard();
+                alert('✅ Alle Daten wurden zurückgesetzt!');
+            }
+        }
+
+        // Auto-Save beim Verlassen der Seite
+        window.addEventListener('beforeunload', function() {
+            saveAllData();
+        });
+
+        // Initialisiere beim Laden
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
