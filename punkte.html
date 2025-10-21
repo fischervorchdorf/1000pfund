@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1000 Pfund Rallye - Tagesübersicht</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 3em;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+            transform: rotate(-2deg);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #ffd700;
+            font-size: 1.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .day-card {
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 8px 8px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #ffd700;
+            display: block;
+        }
+
+        .day-card:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 12px 12px 30px rgba(0,0,0,0.3);
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,215,0,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .day-number {
+            font-size: 3em;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .day-date {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 5px;
+            position: relative;
+        }
+
+        .day-name {
+            font-size: 1em;
+            color: #888;
+            font-style: italic;
+            position: relative;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1.2em;
+            }
+
+            .days-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .day-number {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏁 1000 PFUND RALLYE 🏁</h1>
+            <div class="subtitle">Die verrückteste Woche des Jahres!</div>
+        </div>
+
+        <div class="days-grid">
+            <a href="https://www.fischervorchdorf.at/montag" target="_blank">
+                <div class="day-card">
+                    <div class="day-number">TAG 1</div>
+                    <div class="day-date">21.09.2025</div>
+                    <div class="day-name">Montag</div>
+                </div>
+            </a>
+            <a href="https://www.fischervorchdorf.at/dienstag" target="_blank">
+                <div class="day-card">
+                    <div class="day-number">TAG 2</div>
+                    <div class="day-date">22.09.2025</div>
+                    <div class="day-name">Dienstag</div>
+                </div>
+            </a>
+            <a href="https://www.fischervorchdorf.at/mittwoch" target="_blank">
+                <div class="day-card">
+                    <div class="day-number">TAG 3</div>
+                    <div class="day-date">23.09.2025</div>
+                    <div class="day-name">Mittwoch</div>
+                </div>
+            </a>
+            <a href="https://www.fischervorchdorf.at/donnerstag" target="_blank">
+                <div class="day-card">
+                    <div class="day-number">TAG 4</div>
+                    <div class="day-date">24.09.2025</div>
+                    <div class="day-name">Donnerstag</div>
+                </div>
+            </a>
+            <a href="https://www.fischervorchdorf.at/freitag" target="_blank">
+                <div class="day-card">
+                    <div class="day-number">TAG 5</div>
+                    <div class="day-date">25.09.2025</div>
+                    <div class="day-name">Freitag</div>
+                </div>
+            </a>
+            <a href="https://www.fischervorchdorf.at/samstag" target="_blank">
+                <div class="day-card">
+                    <div class="day-number">TAG 6</div>
+                    <div class="day-date">26.09.2025</div>
+                    <div class="day-name">Samstag</div>
+                </div>
+            </a>
+            <a href="https://www.fischervorchdorf.at/sonntag" target="_blank">
+                <div class="day-card">
+                    <div class="day-number">TAG 7</div>
+                    <div class="day-date">27.09.2025</div>
+                    <div class="day-name">Sonntag - FINALE!</div>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
