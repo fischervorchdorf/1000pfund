@@ -1,18 +1,700 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1000 Pfund Rallye</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1000 Pfund Rallye</title>
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+ }
+body {
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background-color: #f0f0f0;
+ }
+/* A4 Bild am Anfang - zentriert und responsiv */
+.hero-image {
+width: 100%;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 40px 20px;
+background-color: #ffffff;
+ }
+.hero-image img {
+max-width: 21cm; /* A4 Breite auf Desktop */
+width: 100%;
+height: auto;
+box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+ }
+/* A4 Bild auf Tablets und Smartphones */
+@media (max-width: 768px) {
+.hero-image {
+padding: 20px 10px;
+ }
+.hero-image img {
+max-width: 95%; /* Fast volle Breite auf kleineren Geräten */
+ }
+ }
+/* Parallax Container - 10cm hoch auf Desktop, responsiv auf mobil */
+.parallax-container {
+height: 10cm;
+overflow: hidden;
+position: relative;
+width: 100%;
+min-height: 300px; /* Mindesthöhe für sehr kleine Bildschirme */
+ }
+.parallax-image {
+position: absolute;
+width: 100%;
+height: 150%;
+top: 0;
+left: 0;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+will-change: transform; /* Performance-Optimierung */
+ }
+/* Mobile Optimierung für Parallax */
+@media (max-width: 768px) {
+.parallax-container {
+height: 250px; /* Kleinere Höhe auf Tablets */
+ }
+ }
+@media (max-width: 480px) {
+.parallax-container {
+height: 200px; /* Noch kleinere Höhe auf Smartphones */
+ }
+/* Parallax-Effekt auf Smartphones reduzieren für bessere Performance */
+.parallax-image {
+height: 120%; /* Weniger Bewegungsraum */
+ }
+ }
+/* Große Bilder 1920x1357 - bildschirmbreit und responsiv OHNE Abschneiden */
+.full-width-image {
+width: 100%;
+overflow: hidden;
+background-color: #000;
+line-height: 0; /* Verhindert Lücken unter Bildern */
+ }
+.full-width-image img {
+width: 100%;
+height: auto;
+display: block;
+/* KEIN object-fit: cover - damit nichts abgeschnitten wird */
+/* KEINE max-height - Bilder werden vollständig angezeigt */
+ }
+/* Footer mit Links */
+.footer-links {
+background-color: #000;
+padding: 60px 20px;
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 30px;
+align-items: center;
+ }
+/* Verrückte Link-Boxen im 1000 Pfund Rallye Stil */
+.crazy-link-box {
+border: 4px solid #00d4aa;
+background-color: white;
+padding: 30px 40px;
+text-align: center;
+cursor: pointer;
+transition: all 0.3s ease;
+text-decoration: none;
+display: inline-block;
+transform: rotate(-1deg);
+box-shadow: 5px 5px 0px #00d4aa;
+ }
+.crazy-link-box:nth-child(2) {
+transform: rotate(1deg);
+ }
+.crazy-link-box:nth-child(3) {
+transform: rotate(-0.5deg);
+ }
+.crazy-link-box:hover {
+transform: rotate(0deg) scale(1.05);
+box-shadow: 10px 10px 0px #00d4aa;
+border-color: #ff6b35;
+ }
+.crazy-link-box h3 {
+color: #1a1464;
+font-size: 1.5em;
+font-weight: 900;
+line-height: 1.3;
+margin: 0;
+ }
+/* Spezial-Button für PDF Download */
+.pdf-button {
+border: 4px solid #ff6b35;
+background-color: #1a1464;
+padding: 25px 35px;
+cursor: pointer;
+transition: all 0.3s ease;
+text-decoration: none;
+display: inline-block;
+transform: rotate(2deg);
+box-shadow: 8px 8px 0px #ff6b35;
+ }
+.pdf-button:hover {
+transform: rotate(-2deg) scale(1.08);
+box-shadow: 12px 12px 0px #ff6b35;
+background-color: #ff6b35;
+ }
+.pdf-button p {
+color: white;
+font-size: 1.3em;
+font-weight: 900;
+margin: 0;
+text-align: center;
+line-height: 1.4;
+ }
+/* Kontakt Sektion */
+.contact-section {
+background-color: #000;
+color: white;
+padding: 40px 20px;
+text-align: left;
+ }
+.contact-section h2 {
+color: #ff6b35;
+font-size: 1.8em;
+margin-bottom: 20px;
+ }
+.contact-section p {
+font-size: 1.1em;
+line-height: 1.8;
+ }
+.contact-section a {
+color: #00d4aa;
+text-decoration: none;
+ }
+.contact-section a:hover {
+color: #ff6b35;
+ }
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+.crazy-link-box {
+width: 100%;
+max-width: 350px;
+padding: 25px 30px;
+ }
+.crazy-link-box h3 {
+font-size: 1.3em;
+ }
+.pdf-button {
+width: 100%;
+max-width: 350px;
+padding: 20px 30px;
+ }
+.pdf-button p {
+font-size: 1.1em;
+ }
+.footer-links {
+padding: 40px 15px;
+gap: 20px;
+ }
+.contact-section {
+padding: 30px 15px;
+ }
+.contact-section h2 {
+font-size: 1.5em;
+ }
+.contact-section p {
+font-size: 1em;
+ }
+ }
+/* Extra kleine Bildschirme */
+@media (max-width: 480px) {
+.crazy-link-box {
+padding: 20px 25px;
+ }
+.crazy-link-box h3 {
+font-size: 1.2em;
+ }
+.pdf-button p {
+font-size: 1em;
+ }
+ }
+/* Verrückter Mini Cooper Animation Container */
+.mini-cooper-zone {
+position: relative;
+width: 100%;
+height: 400px;
+background-color: #000;
+overflow: hidden;
+border-top: 5px dashed #00d4aa;
+border-bottom: 5px dashed #00d4aa;
+ }
+.mini-cooper {
+position: absolute;
+font-size: 3em;
+z-index: 100;
+filter: drop-shadow(3px 3px 5px rgba(0,0,0,0.5));
+transition: transform 0.1s ease;
+ }
+/* Verschiedene verrückte Animationen */
+@keyframes crazy-drive-1 {
+ 0% {
+left: -100px;
+top: 50%;
+transform: rotate(0deg) scaleX(1);
+ }
+ 25% {
+left: 30%;
+top: 20%;
+transform: rotate(-15deg) scaleX(1);
+ }
+ 50% {
+left: 60%;
+top: 70%;
+transform: rotate(15deg) scaleX(1);
+ }
+ 75% {
+left: 85%;
+top: 30%;
+transform: rotate(-10deg) scaleX(1);
+ }
+ 100% {
+left: 120%;
+top: 50%;
+transform: rotate(0deg) scaleX(1);
+ }
+ }
+@keyframes crazy-drive-2 {
+ 0% {
+right: -100px;
+top: 30%;
+transform: rotate(0deg) scaleX(-1);
+ }
+ 30% {
+right: 40%;
+top: 60%;
+transform: rotate(-20deg) scaleX(-1);
+ }
+ 60% {
+right: 70%;
+top: 20%;
+transform: rotate(25deg) scaleX(-1);
+ }
+ 100% {
+right: 120%;
+top: 70%;
+transform: rotate(-15deg) scaleX(-1);
+ }
+ }
+@keyframes crazy-drive-3 {
+ 0% {
+left: 50%;
+top: -100px;
+transform: rotate(90deg) scaleX(1);
+ }
+ 25% {
+left: 20%;
+top: 30%;
+transform: rotate(180deg) scaleX(1);
+ }
+ 50% {
+left: 80%;
+top: 50%;
+transform: rotate(270deg) scaleX(1);
+ }
+ 75% {
+left: 40%;
+top: 80%;
+transform: rotate(360deg) scaleX(1);
+ }
+ 100% {
+left: 50%;
+top: 120%;
+transform: rotate(450deg) scaleX(1);
+ }
+ }
+@keyframes spin-donuts {
+ 0% {
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%) rotate(0deg) scale(1);
+ }
+ 50% {
+transform: translate(-50%, -50%) rotate(720deg) scale(1.5);
+ }
+ 100% {
+left: 50%;
+top: 50%;
+transform: translate(-50%, -50%) rotate(1440deg) scale(1);
+ }
+ }
+/* Reifenspuren */
+.tire-marks {
+position: absolute;
+font-size: 2em;
+opacity: 0;
+color: #333;
+animation: fade-marks 2s ease-out forwards;
+ }
+@keyframes fade-marks {
+ 0% { opacity: 0.8; }
+ 100% { opacity: 0; }
+ }
+/* Quietsch-Text */
+.screech-text {
+position: absolute;
+font-size: 1.5em;
+font-weight: 900;
+color: #ff6b35;
+text-shadow: 2px 2px 0 #00d4aa;
+animation: screech-bounce 0.5s ease-out;
+opacity: 0;
+z-index: 99;
+ }
+@keyframes screech-bounce {
+ 0% {
+opacity: 1;
+transform: scale(0.5) rotate(-10deg);
+ }
+ 50% {
+opacity: 1;
+transform: scale(1.2) rotate(5deg);
+ }
+ 100% {
+opacity: 0;
+transform: scale(0.8) rotate(-5deg);
+ }
+ }
+/* Mobile Anpassung */
+@media (max-width: 768px) {
+.mini-cooper-zone {
+height: 300px;
+ }
+.mini-cooper {
+font-size: 2em;
+ }
+.screech-text {
+font-size: 1.2em;
+ }
+ }
+</style>
 </head>
 <body>
-    <center><h1>Willkommen bei der 1000 Pfund Rallye!</h1></center>
-    <center>
-        <h3><a href="anmeldung.html">Anmeldung</a></h3>
-        <h3><a href="regeln.html">Regeln</a></h3>
-        <h3><a href="punkte.html">Punkte</a></h3>
-        <h3><a href="teams.html">Teams</a></h3>
-        <h3><a href="wertung.html">Wertung</a></h3>
-    </center>
+<!-- A4 Hero Bild am Anfang -->
+<div class="hero-image">
+<img src="1000pfund_1.jpg" alt="1000 Pfund Rallye Hero">
+</div>
+<!-- Parallax 1 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax1" style="background-image: url('para1.png');"></div>
+</div>
+<!-- Großes Bild 1 -->
+<div class="full-width-image">
+<img src="1000pfund_2.jpg" alt="Rallye Bild 1">
+</div>
+<!-- Parallax 2 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax2" style="background-image: url('para2.png');"></div>
+</div>
+<!-- Großes Bild 2 -->
+<div class="full-width-image">
+<img src="1000pfund_3.jpg" alt="Rallye Bild 2">
+</div>
+<!-- Parallax 3 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax3" style="background-image: url('para3.png');"></div>
+</div>
+<!-- Großes Bild 3 -->
+<div class="full-width-image">
+<img src="1000pfund_4.jpg" alt="Rallye Bild 3">
+</div>
+<!-- Parallax 4 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax4" style="background-image: url('para4.png');"></div>
+</div>
+<!-- Großes Bild 4 -->
+<div class="full-width-image">
+<img src="1000pfund_5.jpg" alt="Rallye Bild 4">
+</div>
+<!-- Parallax 5 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax5" style="background-image: url('para5.png');"></div>
+</div>
+<!-- Großes Bild 5 -->
+<div class="full-width-image">
+<img src="1000pfund_6.jpg" alt="Rallye Bild 5">
+</div>
+<!-- Parallax 6 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax6" style="background-image: url('para6.png');"></div>
+</div>
+<!-- Großes Bild 6 -->
+<div class="full-width-image">
+<img src="1000pfund_7.jpg" alt="Rallye Bild 6">
+</div>
+<!-- Parallax 7 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax7" style="background-image: url('para7.png');"></div>
+</div>
+<!-- Großes Bild 7 -->
+<div class="full-width-image">
+<img src="1000pfund_8.jpg" alt="Rallye Bild 7">
+</div>
+<!-- Parallax 8 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax8" style="background-image: url('para8.png');"></div>
+</div>
+<!-- Großes Bild 8 -->
+<div class="full-width-image">
+<img src="1000pfund_9.jpg" alt="Rallye Bild 8">
+</div>
+<!-- Parallax 9 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax9" style="background-image: url('para9.png');"></div>
+</div>
+<!-- Großes Bild 9 -->
+<div class="full-width-image">
+<img src="1000pfund_10.jpg" alt="Rallye Bild 9">
+</div>
+<!-- Parallax 10 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax10" style="background-image: url('para10.png');"></div>
+</div>
+<!-- Großes Bild 10 -->
+<div class="full-width-image">
+<img src="1000pfund_11.jpg" alt="Rallye Bild 10">
+</div>
+<!-- Parallax 11 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax11" style="background-image: url('para11.png');"></div>
+</div>
+<!-- Großes Bild 11 -->
+<div class="full-width-image">
+<img src="1000pfund_12.jpg" alt="Rallye Bild 11">
+</div>
+<!-- Parallax 12 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax12" style="background-image: url('para1.png');"></div>
+</div>
+<!-- Großes Bild 12 -->
+<div class="full-width-image">
+<img src="1000pfund_13.jpg" alt="Rallye Bild 12">
+</div>
+<!-- Parallax 13 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax13" style="background-image: url('para2.png');"></div>
+</div>
+<!-- Großes Bild 13 -->
+<div class="full-width-image">
+<img src="1000pfund_14.jpg" alt="Rallye Bild 13">
+</div>
+<!-- Parallax 14 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax14" style="background-image: url('para3.png');"></div>
+</div>
+<!-- Großes Bild 14 -->
+<div class="full-width-image">
+<img src="1000pfund_15.jpg" alt="Rallye Bild 14">
+</div>
+<!-- Parallax 15 -->
+<div class="parallax-container">
+<div class="parallax-image" id="parallax15" style="background-image: url('para4.png');"></div>
+</div>
+<!-- Großes Bild 15 -->
+<div class="full-width-image">
+<img src="1000pfund_16.jpg" alt="Rallye Bild 15">
+</div>
+<!-- Verrückte Mini Cooper Zone -->
+<div class="mini-cooper-zone" id="miniCooperZone">
+<!-- Mini Coopers werden hier per JavaScript eingefügt -->
+</div>
+<!-- Footer mit verrückten Links -->
+<div class="footer-links">
+<a href="regeln.html" class="crazy-link-box">
+<h3>Hier geht's zu<br>den REGELN</h3>
+</a>
+<a href="anmeldung.html" class="crazy-link-box">
+<h3>Hier geht's zur<br>ANMELDUNG<br>und den<br>KOSTEN</h3>
+</a>
+<a href="https://www.goodwood.com/motorsport/goodwood-revival/" target="_blank" class="crazy-link-box">
+<h3>Link zum<br>GOODWOOD<br>REVIVAL</h3>
+</a>
+</div>
+<!-- Passwort-geschützte Links -->
+<div class="footer-links" style="padding-top: 0;">
+<a href="#" class="crazy-link-box" onclick="checkPassword('punkte.html'); return false;">
+<h3>🏆<br>PUNKTE</h3>
+</a>
+<a href="#" class="crazy-link-box" onclick="checkPassword('teams.html'); return false;">
+<h3>👥<br>TEAMS</h3>
+</a>
+<a href="#" class="crazy-link-box" onclick="checkPassword('wertung.html'); return false;">
+<h3>📊<br>WERTUNG</h3>
+</a>
+</div>
+<!-- PDF Download Button -->
+<div class="footer-links" style="padding-top: 0;">
+<a href="1000 pfund rallye magazin.pdf" class="pdf-button" download>
+<p>1000 Pfund Rallye<br>Magazin als PDF<br>downloaden</p>
+</a>
+</div>
+<!-- Kontakt -->
+<div class="contact-section">
+<h2>KONTAKT</h2>
+<p>
+ Schlossplatz 7<br>
+ A-4655 Vorchdorf<br><br>
+<a href="mailto:fischervorchdorf@gmx.at">fischervorchdorf@gmx.at</a><br>
+<a href="tel:+436991227926">+43 699 12279626</a>
+</p>
+</div>
+<!-- JavaScript für Parallax-Effekt -->
+<script>
+// ========================================
+// PASSWORT-SCHUTZ FÜR SPEZIELLE LINKS
+// ========================================
+
+function checkPassword(targetPage) {
+const correctPassword = '1224';
+const userPassword = prompt('🔐 Bitte Passcode eingeben:');
+
+if (userPassword === null) {
+// Benutzer hat abgebrochen
+return false;
+}
+
+if (userPassword === correctPassword) {
+// Passwort korrekt - zur Seite weiterleiten
+window.location.href = targetPage;
+} else {
+// Falsches Passwort
+alert('❌ Falscher Passcode! Zugriff verweigert.');
+return false;
+}
+}
+
+// ========================================
+// PARALLAX SCROLLING
+// ========================================
+
+// Prüfen ob es ein mobiles Gerät ist
+let isMobile = window.innerWidth <= 768;
+// Alle Parallax-Container finden
+const parallaxElements = document.querySelectorAll('.parallax-image');
+// Scroll-Event Listener mit Performance-Optimierung
+let ticking = false;
+window.addEventListener('scroll', function() {
+if (!ticking) {
+window.requestAnimationFrame(function() {
+parallaxElements.forEach((element) => {
+// Container-Position ermitteln
+const container = element.parentElement;
+const containerTop = container.offsetTop;
+const containerHeight = container.offsetHeight;
+const scrolled = window.pageYOffset;
+const windowHeight = window.innerHeight;
+// Prüfen, ob der Container im sichtbaren Bereich ist
+if (scrolled + windowHeight > containerTop && scrolled < containerTop + containerHeight) {
+// Parallax-Geschwindigkeit anpassen je nach Gerät
+// Auf Mobilgeräten langsamerer/schwächerer Effekt für bessere Performance
+const speed = isMobile ? 0.3 : 0.5;
+// Berechne die Verschiebung
+const yPos = (scrolled - containerTop) * speed;
+// Wende die Transformation an
+element.style.transform = `translateY(${yPos}px)`;
+ }
+ });
+ticking = false;
+ });
+ticking = true;
+ }
+ });
+// Bei Größenänderung des Fensters neu berechnen
+window.addEventListener('resize', function() {
+isMobile = window.innerWidth <= 768;
+ });
+
+// ========================================
+// VERRÜCKTER MINI COOPER ANIMATION
+// ========================================
+
+const miniCooperZone = document.getElementById('miniCooperZone');
+const carEmojis = ['🏎️', '🚗', '🚙']; // Verschiedene Auto-Emojis
+const screechTexts = ['QUIETSCH!', 'KREISCH!', 'BRRRM!', 'VROOM!', 'WUSCH!'];
+let carCounter = 0;
+let isAnimating = false;
+// Funktion um einen Mini Cooper zu erstellen
+function createMiniCooper() {
+if (carCounter >= 3) return; // Maximal 3 Autos gleichzeitig
+carCounter++;
+const car = document.createElement('div');
+car.className = 'mini-cooper';
+car.textContent = carEmojis[Math.floor(Math.random() * carEmojis.length)];
+// Zufällige Animation auswählen
+const animations = ['crazy-drive-1', 'crazy-drive-2', 'crazy-drive-3', 'spin-donuts'];
+const randomAnimation = animations[Math.floor(Math.random() * animations.length)];
+const duration = randomAnimation === 'spin-donuts' ? 3 : 5 + Math.random() * 3;
+car.style.animation = `${randomAnimation} ${duration}s ease-in-out forwards`;
+miniCooperZone.appendChild(car);
+// Reifenspuren und Quietsch-Effekte während der Fahrt
+const marksInterval = setInterval(() => {
+if (Math.random() > 0.7) {
+createTireMarks(car);
+ }
+if (Math.random() > 0.8) {
+createScreech(car);
+ }
+ }, 300);
+// Auto nach Animation entfernen
+setTimeout(() => {
+clearInterval(marksInterval);
+car.remove();
+carCounter--;
+ }, duration * 1000);
+ }
+// Reifenspuren erstellen
+function createTireMarks(car) {
+const marks = document.createElement('div');
+marks.className = 'tire-marks';
+marks.textContent = '~~~';
+marks.style.left = car.offsetLeft + 'px';
+marks.style.top = car.offsetTop + 'px';
+miniCooperZone.appendChild(marks);
+setTimeout(() => marks.remove(), 2000);
+ }
+// Quietsch-Text erstellen
+function createScreech(car) {
+const screech = document.createElement('div');
+screech.className = 'screech-text';
+screech.textContent = screechTexts[Math.floor(Math.random() * screechTexts.length)];
+screech.style.left = (car.offsetLeft + 50) + 'px';
+screech.style.top = (car.offsetTop - 30) + 'px';
+miniCooperZone.appendChild(screech);
+setTimeout(() => screech.remove(), 500);
+ }
+// Observer um zu prüfen, ob die Mini Cooper Zone sichtbar ist
+const observer = new IntersectionObserver((entries) => {
+entries.forEach(entry => {
+if (entry.isIntersecting && !isAnimating) {
+isAnimating = true;
+startMiniCooperChaos();
+ }
+ });
+ }, { threshold: 0.5 });
+observer.observe(miniCooperZone);
+// Mini Cooper Chaos starten
+function startMiniCooperChaos() {
+// Erste Welle von Autos
+createMiniCooper();
+setTimeout(() => createMiniCooper(), 1500);
+setTimeout(() => createMiniCooper(), 3000);
+// Kontinuierlich neue Autos erstellen
+setInterval(() => {
+if (Math.random() > 0.6) { // 40% Chance alle 4 Sekunden
+createMiniCooper();
+ }
+ }, 4000);
+ }
+</script>
 </body>
 </html>
