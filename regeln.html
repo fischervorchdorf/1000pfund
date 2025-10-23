@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1000 Pfund Rallye - Teil 01</title>
+    <title>1000 Pfund Rallye - Das Abenteuer</title>
     <style>
         * {
             margin: 0;
@@ -222,6 +222,69 @@
             text-decoration: underline;
         }
 
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+            border-left: 3px solid #845ef7;
+            margin: 20px 0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .timeline-item::before {
+            content: "📍";
+            position: absolute;
+            left: -42px;
+            font-size: 1.5em;
+            background: white;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .timeline-item h4 {
+            color: #845ef7;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        .price-summary {
+            background: linear-gradient(135deg, #d3f9d8 0%, #b2f2bb 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid #51cf66;
+            margin: 20px 0;
+        }
+
+        .price-summary h3 {
+            color: #2b8a3e;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            text-align: center;
+        }
+
+        .emoji-large {
+            font-size: 2em;
+            display: inline-block;
+            animation: bounce 1s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .footer {
+            background: #845ef7;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            font-size: 1.2em;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8em;
@@ -231,9 +294,43 @@
                 font-size: 1.4em;
             }
         }
+        /* Fixed home button */
+        .home-button {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            background: #fff;
+            color: #845ef7;
+            border: 3px solid #ffd43b;
+            border-radius: 50%;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            text-decoration: none;
+            font-size: 1.2rem;
+            z-index: 9999;
+        }
+        .home-button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Mobile adjustments for home button */
+        @media (max-width: 768px) {
+            .home-button {
+                width: 42px;
+                height: 42px;
+                top: 12px;
+                right: 12px;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <a href="index.html" class="home-button" aria-label="Zurück zur Hauptseite">🏠</a>
     <div class="container">
         <div class="header">
             <h1>🏁 DIE 1000 PFUND RALLYE 🏁</h1>
@@ -315,6 +412,317 @@
                     <br>Keine Fotos = Keine Punkte = Keine Ausreden!
                 </div>
             </div>
+
+            <!-- REGELN -->
+            <div class="section">
+                <div class="section-title">
+                    <span>📜</span> Die heiligen Regeln
+                </div>
+                
+                <div class="rule-item">
+                    <h3>1. Routenwahl</h3>
+                    <p>Ihr dürft <span class="important">JEDEN</span> Weg nehmen - aber:</p>
+                    <ul>
+                        <li>🚫 <strong>AUTOBAHNEN SIND TABU!</strong></li>
+                        <li>✅ Ausnahme: Nach Pannen zum Aufholen erlaubt</li>
+                        <li>🗺️ Durchfahrtskontrollen können ausgelassen werden (gibt's halt weniger Punkte)</li>
+                        <li>🏨 Hotel bis 23:59 erreichen = Pflicht für die Hotelpunkte</li>
+                    </ul>
+                </div>
+
+                <div class="rule-item">
+                    <h3>2. Das Auto</h3>
+                    <ul>
+                        <li>🔧 "Sollte" mindestens <strong>30 Jahre alt sein</strong> (Baujahr vor 1996) - ansonsten Punkteabzug durch Bewertung</li>
+                        <li>💰 Maximal 1000 Pfund Kaufpreis - (Preis höher führt zu weniger Startpunkten)</li> 
+                        <li>⚠️ Der Tacho <span class="important">MUSS</span> funktionieren!</li>
+                        <li>📸 V5-Dokument (englischer Fahrzeugbrief) fotografieren</li>
+                        <li>🛡️ Versicherung ist PFLICHT (wird gestellt für EU) - in England müsst ihr euch selber drum kümmern!</li>
+                    </ul>
+                </div>
+
+                <div class="funny-note">
+                    🤪 "Mein Tacho ist kaputt" = Keine Punkte!<br>
+                    "Mein Auto ist explodiert" = 50 Pannenpunkte + lebenslangen Respekt!
+                </div>
+
+                <div class="rule-item">
+                    <h3>3. Pannen & Reparaturen</h3>
+                    <ul>
+                        <li>📸 Jede Panne muss <strong>dokumentiert</strong> werden (Fotos/Videos!)</li>
+                        <li>🔨 Selbst repariert = wahrscheinlich 1 Punkt pro Minute (wird noch diskutiert...)</li>
+                        <li>🧾 Ersatzteile-Rechnung = 1:1 Punkte (1€ = 1 Punkt)</li>
+                        <li>🚛 Abschleppen = Rechnungsbetrag als Punkte</li>
+                        <li>🏪 In England vorsorglich gekaufte & verbaute Teile = 1 Pfund bringt 1,25 Punkte</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>💡 Pro-Tipp:</strong> Ein Kofferraum voller Ersatzteile aus England = Mehr Punkte bei Pannen!<br>
+                    Schrauber-Kings haben hier den Vorteil!
+                </div>
+
+                <div class="rule-item">
+                    <h3>4. Sonderaufgaben</h3>
+                    <p>Jeden Morgen gibt's <strong>geheime Sonderaufgaben</strong>!</p>
+                    <ul>
+                        <li>🎭 Von lustig bis absurd</li>
+                        <li>🏆 Unterschiedliche Punktzahl</li>
+                        <li>🤐 Werden NICHT vorher verraten</li>
+                        <li>📖 Auch im Roadbook versteckt</li>
+                    </ul>
+                </div>
+
+                <div class="rule-item">
+                    <h3>5. Fahrzeit & Kilometer</h3>
+                    <ul>
+                        <li>⏰ Durchschnittlich 10 Stunden Fahrzeit pro Tag</li>
+                        <li>📏 Ca. 400-500 km täglich (ohne Autobahn!)</li>
+                        <li>📸 <span class="important">Tacho-Fotos JEDEN TAG!</span> (morgens & abends)</li>
+                        <li>🔢 Meilen werden mit Multiplikator berechnet und bringen dann normalerweise pro Meile 1 Punkt</li>
+                    </ul>
+                </div>
+
+                <div class="danger-box">
+                    <strong>🚨 MEGA-WICHTIG:</strong><br>
+                    Ohne Tacho-Fotos = NULL Kilometer-Punkte!<br>
+                    Das sind oft die meisten Punkte - also nicht vergessen! 📸
+                </div>
+            </div>
+
+            <!-- ABLAUF & ROUTE -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🗺️</span> Ablauf der Rallye
+                </div>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h4>Tag 1 – Sonntag, 20. September</h4>
+                        <ul>
+                            <li>🍽️ Gemeinsames Abendessen im Hotel in Dover</li>
+                            <li>🏨 Übernachtung in Dover</li>
+                        </ul>
+                        <div class="funny-note" style="margin-top: 10px;">
+                            ⏰ Frühstück voraussichtlich NICHT inkludiert<br>
+                            (wegen früher Abfahrt am Montag – Schlaf ist eh überbewertet!)
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h4>Tag 2–6: Die große Fahrt, Montag bis Samstag 21. bis 26. September</h4>
+                        <div class="rule-item">
+                            <ul>
+                                <li>⛴️ <strong>Fährüberfahrt Dover – Calais</strong> (Montag früh, so gegen 3 Uhr :))</li>
+                                <li>🗺️ <span class="important">Freie Routenwahl</span> – jeder fährt individuell</li>
+                                <li>🏨 Tägliche Hotelübernachtungen an den Etappenzielen</li>
+                                <li>🥐 Frühstück (soweit im Hotel verfügbar wird es gebucht)</li>
+                            </ul>
+                        </div>
+                        <div class="highlight-box">
+                            <strong>🎯 Das ist dein Abenteuer!</strong><br>
+                            Du entscheidest die Route, du meisterst die Herausforderungen,<br>
+                            du sammelst die Punkte!
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h4>Tag 7: Das große Finale am Sonntag dem 27. September</h4>
+                        <ul>
+                            <li>🏁 Ankunft in Österreich (genauer Ort wird noch bekannt gegeben)</li>
+                            <li>🍺 Gemeinsames Abschluss-Abendessen</li>
+                            <li>🏆 Siegerehrung & Geschichten austauschen</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OPTIONAL -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🎪</span> Optional (selbst zu organisieren)
+                </div>
+                <div class="rule-item">
+                    <h3>Goodwood Revival</h3>
+                    <p><strong>📅 18.–20. September</strong></p>
+                    <ul>
+                        <li>🎟️ Besuch des legendären Goodwood Festivals</li>
+                        <li>✈️ Flug nach England</li>
+                        <li>🚙 Leihauto vor Ort</li>
+                    </ul>
+                </div>
+                <div class="funny-note">
+                    💡 Perfekt für alle, die schon ein paar Tage früher das britische Benzin-Feeling genießen wollen!
+                </div>
+            </div>
+
+            <!-- INKLUDIERTE LEISTUNGEN -->
+            <div class="section">
+                <div class="section-title">
+                    <span>✅</span> Im Preis inkludiert
+                </div>
+                
+                <div class="price-summary">
+                    <h3>🎁 Dein Rallye-Paket enthält:</h3>
+                    <div class="rule-item">
+                        <ul>
+                            <li>🏨 <strong>7 Übernachtungen</strong> (Hotels an allen Etappenzielen, meist >9 Punkte booking.com)</li>
+                            <li>🍽️ <strong>2x Abendessen</strong> (Tag 1 in Dover & Tag 7 beim Finale)</li>
+                            <li>🥐 <strong>Frühstück</strong> (mindestens 5x, soweit in den Hotels verfügbar)</li>
+                            <li>⛴️ <strong>Fährüberfahrt Dover – Calais</strong></li>
+                            <li>🛡️ <strong>Fahrzeugversicherung</strong> für die komplette Tour innerhalb der EU</li>
+                            <li>👕 <strong>Rallye-Bekleidung</strong> mit offiziellem 1000 Pfund Logo</li>
+                            <li>📖 <strong>250 Seiten Roadbook (SW)</strong> für unterwegs</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>📚 Bonus für Sammler & Nostalgiker:</strong><br>
+                    300 Seiten Roadbook in <span class="important">FARBE & HARDCOVER</span><br>
+                    Verfügbar ab Ende 2026 – das perfekte Erinnerungsstück!
+                </div>
+
+                <div class="highlight-box" style="margin-top: 20px;">
+                    <strong>💰 Kosten:</strong> Ca. 3.500€ pro Team (2 Personen)<br>
+                    <strong>Anzahlung:</strong> 1.000€ (500€ pro Person)<br>
+                    <strong>Rest:</strong> Bis Ende Jänner 2026!
+                </div>
+            </div>
+
+            <!-- NICHT IM PREIS -->
+            <div class="section">
+                <div class="section-title">
+                    <span>💰</span> Nicht im Preis enthalten
+                </div>
+                <div class="danger-box">
+                    <strong>⚠️ Das musst du selbst organisieren & bezahlen:</strong>
+                    <ul style="margin-top: 10px;">
+                        <li>🚢 Anreise nach England (eigenes Auto + Fähre oder Flug nach Stansted)</li>
+                        <li>🔑 Abholung des Fahrzeugs vor Ort</li>
+                        <li>🚗 Das Auto selbst natürlich</li>
+                        <li>🔧 Ersatzteile & Werkzeug</li>
+                        <li>🍔 Die meisten Mahlzeiten und ab und an ein Bier :)</li>
+                        <li>💪 Eure Nerven & Geduld</li>
+                        <li>🛡️ Versicherung in England (wird bei einem Treffen besprochen)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- WICHTIGE DETAILS -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🎯</span> Wichtige Details
+                </div>
+                <div class="rule-item">
+                    <h3>Sponsoren & Aufkleber</h3>
+                    <p>Die Sponsorenaufkleber müssen:</p>
+                    <ul>
+                        <li>✅ Vor Dover-Schiffseinfahr aufgeklebt sein</li>
+                        <li>✅ Bis zum Abschleppen durch ÖAMTC am Auto bleiben</li>
+                        <li>🚗 Auf trockenem Auto geklebt werden</li>
+                    </ul>
+                </div>
+
+                <div class="rule-item">
+                    <h3>Nummerntafeln</h3>
+                    <ul>
+                        <li>📋 Jedes Team bekommt Nummerntafeln</li>
+                        <li>✅ VOR Dover-Einfahrt anbringen</li>
+                        <li>❌ Nach Calais-Ausfahrt wieder entfernen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SOCIAL MEDIA -->
+            <div class="section">
+                <div class="section-title">
+                    <span>📱</span> Social Media Pflicht
+                </div>
+                <div class="rule-item">
+                    <h3>Facebook ist Pflicht!</h3>
+                    <p>Wir dokumentieren die gesamte Rallye über Facebook:</p>
+                    <ul>
+                        <li>📱 Facebook-Account ist <span class="important">VERPFLICHTEND</span></li>
+                        <li>🤳 So viele Bilder wie möglich posten</li>
+                        <li>😎 Kann auch ein Dummy-Account sein</li>
+                        <li>📸 Teilt euren Wahnsinn mit der Welt!</li>
+                    </ul>
+                </div>
+                <div class="funny-note">
+                    Wenn schon leiden, dann wenigstens mit Style! 📸💪
+                </div>
+            </div>
+
+            <!-- NEGATIVPUNKTE -->
+            <div class="section">
+                <div class="section-title">
+                    <span>⚡</span> Die dunkle Seite
+                </div>
+                <div class="rule-item">
+                    <h3>Negativpunkte sind erlaubt!</h3>
+                    <p>Ja, richtig gelesen! Man kann auch mit Minus-Punkten starten:</p>
+                    <ul>
+                        <li>💎 Zu schönes/neues Auto? = Minuspunkte</li>
+                        <li>🚗 Wer ein schickes Auto importieren will = Kann mitmachen!</li>
+                        <li>⚖️ Die Challenge: Trotzdem gewinnen!</li>
+                    </ul>
+                </div>
+                <div class="funny-note">
+                    Für alle, die einen Jaguar XK8 importieren wollen und nebenbei eine Rallye fahren 😎
+                </div>
+            </div>
+
+            <!-- EXTRAPUNKTE -->
+            <div class="section">
+                <div class="section-title">
+                    <span>🎁</span> Bonus & Extrapunkte
+                </div>
+                <div class="rule-item">
+                    <h3>Die Organisation behält sich vor:</h3>
+                    <ul>
+                        <li>🌟 Extrapunkte für besondere Pannen zu vergeben</li>
+                        <li>🤪 Punkte für spektakuläre Blödheiten</li>
+                        <li>🦸 Belohnung für außergewöhnlichen Einsatz</li>
+                        <li>😱 Punkte für ungewöhnliche Umwege</li>
+                    </ul>
+                </div>
+                <div class="funny-note">
+                    Ja, das ist nicht fair! Ja, das ist nicht transparent!<br>
+                    Aber hey - das ist die 1000 PFUND RALLYE! 🎪
+                </div>
+            </div>
+
+            <!-- PHILOSOPHIE -->
+            <div class="section">
+                <div class="section-title">
+                    <span>💭</span> Die Rallye-Philosophie
+                </div>
+                <div class="rule-item">
+                    <p style="font-size: 1.2em; line-height: 1.8; font-style: italic;">
+                        "Dies ist <strong>KEIN Zuckerschlecken</strong>, sondern pures Benzinabenteuer!
+                        Wer jemals davon geträumt hat, die Alpen nicht mit einem geleasten SUV, 
+                        sondern mit einem 500-Euro-Diesel voller Roststellen und Herzblut zu bezwingen, 
+                        der weiß: Dieses Abenteuer schreibt Geschichten, die man noch seinen Enkelkindern erzählt!"
+                    </p>
+                </div>
+                
+                <div class="warning-box" style="margin-top: 30px;">
+                    <h2 class="emoji-large">👉</h2>
+                    <p style="font-size: 1.5em; margin: 20px 0;">
+                        <strong>Für echte Motorfans gibt es nur eine Frage:</strong>
+                    </p>
+                    <p style="font-size: 1.3em;">
+                        Willst du dabei sein – oder willst du dir dein Leben lang anhören, 
+                        wie andere davon erzählen?
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>🏁 1000 PFUND RALLYE 🏁</strong></p>
+            <p>Benzin im Blut, Abenteuer im Herzen!</p>
         </div>
     </div>
 </body>

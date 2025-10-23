@@ -136,9 +136,43 @@
                 font-size: 2.5em;
             }
         }
+        /* Fixed home button */
+        .home-button {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            background: #fff;
+            color: #845ef7;
+            border: 3px solid #ffd43b;
+            border-radius: 50%;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+            text-decoration: none;
+            font-size: 1.2rem;
+            z-index: 9999;
+        }
+        .home-button:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Mobile adjustments for home button */
+        @media (max-width: 768px) {
+            .home-button {
+                width: 42px;
+                height: 42px;
+                top: 12px;
+                right: 12px;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <a href="index.html" class="home-button" aria-label="Zurück zur Hauptseite">🏠</a>
     <div class="container">
         <div class="header">
             <h1>🏁 1000 PFUND RALLYE 🏁</h1>
