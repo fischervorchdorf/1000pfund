@@ -580,18 +580,18 @@ font-size: 1.2em;
 <h3>📊<br>WERTUNG</h3>
 </a>
 </div>
-<!-- PDF Download Button -->
+<!-- PDF Download Button (tries common filename variants to avoid 404s) -->
 <div class="footer-links" style="padding-top: 0;">
-<a href="1000 pfund rallye magazin.pdf" class="pdf-button" download>
-<p>1000 Pfund Rallye<br>Magazin als PDF<br>downloaden</p>
-</a>
+    <a href="#" id="pdfDownload" class="pdf-button" role="button">
+        <p>1000 Pfund Rallye<br>Magazin als PDF<br>downloaden</p>
+    </a>
 </div>
 <!-- Kontakt -->
 <div class="contact-section">
-<h2>KONTAKT</h2>
+<h2>VERANSTALTER</h2>
 <p>
- Schlossplatz 7<br>
- A-4655 Vorchdorf<br><br>
+ Classic Cars Sports Club<br>
+ ZVR 40567723<br><br>
 <a href="mailto:fischervorchdorf@gmx.at">fischervorchdorf@gmx.at</a><br>
 <a href="tel:+436991227926">+43 699 12279626</a>
 </p>
@@ -720,6 +720,38 @@ screech.style.top = (car.offsetTop - 30) + 'px';
 miniCooperZone.appendChild(screech);
 setTimeout(() => screech.remove(), 500);
  }
+// ========================================
+// PDF download fallback handler
+// Try multiple filename variants (preferred: underscores, fallback: spaces-encoded)
+// ========================================
+document.addEventListener('DOMContentLoaded', function () {
+    const pdfBtn = document.getElementById('pdfDownload');
+    if (!pdfBtn) return;
+
+    pdfBtn.addEventListener('click', async function (e) {
+        e.preventDefault();
+        const variants = [
+            '1000_Pfund_Rallye_Magazin.pdf',
+            '1000%20Pfund%20Rallye%20Magazin.pdf',
+            '1000%20pfund%20rallye%20magazin.pdf'
+        ];
+
+        for (const v of variants) {
+            try {
+                const resp = await fetch(v, { method: 'HEAD' });
+                if (resp && resp.ok) {
+                    // open in new tab and suggest download name
+                    window.open(v, '_blank');
+                    return;
+                }
+            } catch (err) {
+                // network error, continue to next variant
+            }
+        }
+
+        alert('Die PDF konnte nicht gefunden werden (404). Bitte überprüfe, ob die Datei korrekt auf dem Server liegt und der Dateiname keine Leerzeichen enthält.');
+    });
+});
 // Observer um zu prüfen, ob die Mini Cooper Zone sichtbar ist
 const observer = new IntersectionObserver((entries) => {
 entries.forEach(entry => {
