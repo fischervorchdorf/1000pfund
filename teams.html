@@ -149,7 +149,7 @@
 
         .team-content {
             display: grid;
-            grid-template-columns: 1fr 1fr 1.5fr;
+            grid-template-columns: 1fr 1fr 1.8fr;
             gap: 25px;
             align-items: start;
         }
@@ -193,11 +193,18 @@
             border-color: #845ef7;
         }
 
-        .crew-photo img,
-        .car-photo img {
+        .crew-photo img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .car-photo img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
         }
 
         .car-photo.has-photo {
@@ -247,7 +254,7 @@
 
         .car-photo {
             width: 100%;
-            height: 250px;
+            height: 280px;
             background: white;
             border-radius: 12px;
             display: flex;
@@ -257,6 +264,11 @@
             border: 3px dashed #adb5bd;
             color: #6c757d;
             margin-bottom: 20px;
+            padding: 6px;
+        }
+
+        .car-photo.has-photo img {
+            border-radius: 8px;
         }
 
         .car-specs {
@@ -268,15 +280,16 @@
 
         .car-specs-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 12px;
         }
 
         .spec-item {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            padding: 10px 14px;
             background: #f8f9fa;
             border-radius: 8px;
             font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
@@ -285,15 +298,19 @@
         .spec-label {
             font-weight: bold;
             color: #495057;
+            font-size: 0.9em;
+            white-space: nowrap;
             font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
         }
 
         .spec-value {
             color: #212529;
+            font-size: 1.15em;
+            font-weight: bold;
             font-family: 'Fredoka', 'Comic Sans MS', 'Trebuchet MS', 'Arial Rounded MT Bold', sans-serif;
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 1150px) {
             .team-content {
                 grid-template-columns: 1fr;
                 gap: 20px;
@@ -491,7 +508,7 @@
                         <div class="crew-info">
                             <div><strong>Name:</strong> <span>Uli Bacher</span></div>
                             <div><strong>Geboren:</strong> <span>04.04.1970</span></div>
-                            <div><strong>📞 Tel:</strong> <span>+43 699 14020144</span></div>
+                            <div><strong>📞 Tel:</strong> <span>+43 676 84121312</span></div>
                             <div><strong>✉️ Email:</strong> <span>keine separate E-Mail</span></div>
                             <div><strong>🏠 Adresse:</strong> <span>Gartenrast, 9545 Radenthein</span></div>
                             <div><strong>🎫 Pass:</strong> <span>—</span></div>
