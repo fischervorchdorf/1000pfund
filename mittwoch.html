@@ -328,6 +328,7 @@
             }
         }
     </style>
+    <script src="teams-data.js"></script>
 </head>
 <body>
     <div class="container">
@@ -343,7 +344,7 @@
                 <div class="section-title">👥 Team Info 👥</div>
                 <div class="input-group">
                     <label>Team Name:</label>
-                    <input type="text" id="teamName" placeholder="Die Verrückten...">
+                    <select id="teamName" onchange="applyTeamMultiplier()"></select>
                 </div>
                 <div class="input-group">
                     <label>Team Nummer (1-15):</label>
