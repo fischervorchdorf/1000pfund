@@ -2,24 +2,31 @@
    Wird von allen Tageswertungen eingebunden. Multiplikator hier aendern,
    dann zieht die Aenderung auf allen sieben Tagesseiten mit. */
 window.RALLYE_TEAMS = [
-    { nr: 1, name: 'Stierwoscha',            multiplier: 1.16 },
-    { nr: 2, name: 'Speedy Triumphales',     multiplier: 1.33 },
-    { nr: 3, name: 'Crazy Chicken',          multiplier: 1.09 },
-    { nr: 4, name: 'Orange Blossom Special', multiplier: 1.25 },
-    { nr: 5, name: 'Schnuckiputz 1',         multiplier: 1.86 },
-    { nr: 6, name: 'Aristocats',             multiplier: 0.88 }
+    { nr: 1, name: 'Stierwoscha',             multiplier: 1.16, startPoints: -314 },
+    { nr: 2, name: 'Speedy Triumphales',      multiplier: 1.33, startPoints: 286 },
+    { nr: 3, name: 'Crazy Chicken',           multiplier: 1.09, startPoints: -84 },
+    { nr: 4, name: 'Orange Blossom Special',  multiplier: 1.25, startPoints: -104 },
+    { nr: 5, name: 'Schnuckiputz 1',          multiplier: 1.86, startPoints: -25 },
+    { nr: 6, name: 'Aristocats',              multiplier: 0.88, startPoints: 102 }
 ];
 
-/* Fuellt die Team-Auswahl und setzt den Multiplikator des gewaehlten Teams. */
-function applyTeamMultiplier() {
+/* Setzt Multiplikator und Anfangspunkte des gewaehlten Teams.
+   Felder, die es auf der jeweiligen Tagesseite nicht gibt, werden uebersprungen. */
+function applyTeamData() {
     var select = document.getElementById('teamName');
-    var field = document.getElementById('multiplier');
-    if (!select || !field) return;
+    if (!select) return;
     var team = window.RALLYE_TEAMS.filter(function (t) {
         return t.name === select.value;
     })[0];
     if (!team) return;
-    field.value = team.multiplier.toFixed(2);
+    setField('multiplier', team.multiplier.toFixed(2));
+    setField('startPoints', team.startPoints);
+}
+
+function setField(id, value) {
+    var field = document.getElementById(id);
+    if (!field) return;
+    field.value = value;
     // Loest die onchange/oninput-Berechnung der jeweiligen Tagesseite aus.
     field.dispatchEvent(new Event('input', { bubbles: true }));
     field.dispatchEvent(new Event('change', { bubbles: true }));
