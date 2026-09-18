@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Französisch für die Rallye – 1000 Pfund Rallye</title>
+<style>
+:root{
+  --bg:#ECE6D6; --paper:#FBF8EE; --ink:#1B2559; --soft:#5A6391; --rule:#CBD4F2; --margin:#D8433F;
+  --good:#1F7A4D; --again:#B5402F; --btn:#1B2559; --btn-ink:#FBF8EE; --line:#D9D2BE;
+  --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1230; --paper:#171C42; --ink:#EEF0FF; --soft:#A4ACD8; --rule:#2A3266; --margin:#F0716B;
+    --good:#55C28C; --again:#F08A78; --btn:#EEF0FF; --btn-ink:#0E1230; --line:#2A3266;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1230; --paper:#171C42; --ink:#EEF0FF; --soft:#A4ACD8; --rule:#2A3266; --margin:#F0716B;
+  --good:#55C28C; --again:#F08A78; --btn:#EEF0FF; --btn-ink:#0E1230; --line:#2A3266;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font:400 1rem/1.45 var(--body); min-height:100dvh;
+  display:flex; justify-content:center; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.app{width:100%; max-width:30rem; padding:1rem 1rem 2rem; display:flex; flex-direction:column; gap:1rem}
+header{display:flex; align-items:baseline; justify-content:space-between; gap:1rem}
+h1{font:700 1.7rem/1 var(--display); margin:0}
+h1 span{color:var(--margin)}
+.stat{font-size:.85rem; color:var(--soft); text-align:right}
+
+.tabs{display:grid; grid-template-columns:1fr 1fr auto; gap:.5rem}
+.tabs button{min-height:3.25rem; border-radius:.9rem; border:2px solid var(--ink); background:transparent; color:var(--ink);
+  font:700 1.05rem var(--body); cursor:pointer; padding:0 1rem}
+.tabs button[aria-selected="true"]{background:var(--btn); color:var(--btn-ink)}
+.tabs .small{font-weight:500; font-size:.9rem; border-width:1.5px}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--margin); outline-offset:2px}
+
+/* Heftseite */
+.page{position:relative; background:var(--paper); border-radius:1rem; padding:1.5rem 1.25rem 1.5rem 2.6rem; overflow:hidden;
+  border:1px solid var(--line);
+  background-image:repeating-linear-gradient(to bottom, transparent 0 1.95rem, var(--rule) 1.95rem 2rem)}
+.page::before{content:""; position:absolute; top:0; bottom:0; left:1.7rem; width:2px; background:var(--margin); opacity:.75}
+.card{min-height:17rem; display:flex; flex-direction:column; justify-content:center; gap:.5rem}
+.lbl{font:500 .8rem var(--body); color:var(--soft)}
+.word{font:700 2.1rem/1.15 var(--display); overflow-wrap:anywhere}
+.word.de{font-family:var(--body); font-weight:700; font-size:1.7rem}
+.answer{margin-top:.8rem; padding-top:.8rem; border-top:2px dashed var(--rule)}
+.hidden{display:none !important}
+
+.row{display:flex; gap:.6rem; flex-wrap:wrap}
+.btn{flex:1; min-height:3.4rem; border-radius:.9rem; border:0; font:700 1.05rem var(--body); cursor:pointer;
+  background:var(--btn); color:var(--btn-ink); padding:0 1rem}
+.btn.ghost{background:transparent; color:var(--ink); border:2px solid var(--ink)}
+.btn.good{background:var(--good); color:#fff}
+.btn.again{background:var(--again); color:#fff}
+.btn.round{flex:none; width:3.4rem; padding:0; font-size:1.4rem}
+.btn:disabled{opacity:.45; cursor:default}
+.chips{display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; font-size:.9rem; color:var(--soft)}
+.chip{border:1.5px solid var(--soft); background:transparent; color:var(--ink); border-radius:2rem; padding:.45rem .9rem;
+  font:500 .9rem var(--body); cursor:pointer; min-height:2.5rem}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+
+/* Übersetzen */
+.mic{align-self:center; width:6.5rem; height:6.5rem; border-radius:50%; border:0; background:var(--margin); color:#fff;
+  font-size:2.6rem; cursor:pointer; box-shadow:0 .4rem 1rem rgba(0,0,0,.2)}
+.mic.live{animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.08); box-shadow:0 0 0 .9rem rgba(216,67,63,.2)}}
+@media (prefers-reduced-motion: reduce){.mic.live{animation:none; outline:4px solid var(--ink)}}
+textarea,input[type=text]{width:100%; border:2px solid var(--ink); border-radius:.8rem; background:var(--paper); color:var(--ink);
+  font:400 1.05rem/1.4 var(--body); padding:.8rem}
+textarea{min-height:5.5rem; resize:vertical}
+.note{font-size:.88rem; color:var(--soft)}
+.note.warn{color:var(--again)}
+
+/* Wortliste */
+.list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
+.list li{display:flex; align-items:center; gap:.5rem; padding:.55rem 0; border-bottom:1px solid var(--line)}
+.list .w{flex:1; min-width:0}
+.list .w b{font:700 1.05rem var(--display); display:block; overflow-wrap:anywhere}
+.list .w span{font-size:.9rem; color:var(--soft)}
+.list button{flex:none; width:2.75rem; height:2.75rem; border-radius:.7rem; border:1.5px solid var(--line); background:transparent;
+  color:var(--ink); font-size:1.1rem; cursor:pointer}
+.dots{flex:none; font-size:.7rem; letter-spacing:.1em; color:var(--good)}
+select{width:100%; min-height:3rem; border:2px solid var(--ink); border-radius:.8rem; background:var(--paper); color:var(--ink);
+  font:500 1rem var(--body); padding:0 .8rem}
+.conj{display:grid; grid-template-columns:1fr 1fr; grid-template-rows:repeat(3,auto); grid-auto-flow:column; gap:.15rem 1rem; margin-top:.9rem; padding-top:.8rem; border-top:2px dashed var(--rule)}
+.conj button{all:unset; cursor:pointer; font:500 1.05rem/1.9rem var(--display); color:var(--ink); border-radius:.4rem}
+.conj button i{font-style:normal; color:var(--soft); font-family:var(--body); font-size:.9rem}
+.conj button:focus-visible{outline:3px solid var(--margin)}
+.tag{font:700 .68rem var(--body); color:var(--margin); border:1.5px solid var(--margin); border-radius:1rem; padding:.05rem .45rem; margin-left:.4rem; vertical-align:middle}
+details.box{background:var(--paper); border:1px solid var(--line); border-radius:.9rem; padding:.8rem 1rem}
+details.box summary{cursor:pointer; font-weight:700}
+details.box > *:not(summary){margin-top:.8rem}
+h2{font:700 1.15rem var(--display); margin:.5rem 0 0}
+section{display:flex; flex-direction:column; gap:1rem}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div><a href="../" style="font-size:.85rem;color:var(--soft);text-decoration:none">← 1000 Pfund Rallye</a><h1>Carnet<span>.</span></h1></div>
+    <div class="stat" id="stat"></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-v="learn" aria-selected="true">Lernen</button>
+    <button role="tab" data-v="trans" aria-selected="false">Übersetzen</button>
+    <button role="tab" data-v="words" aria-selected="false" class="small">Wörter</button>
+  </nav>
+
+  <!-- LERNEN -->
+  <section id="v-learn">
+    <div class="chips">
+      <button class="chip" id="dir-fr" aria-pressed="true">Französisch → Deutsch</button>
+      <button class="chip" id="dir-de" aria-pressed="false">Deutsch → Französisch</button>
+      <button class="chip" id="slow" aria-pressed="false">🐌 langsam</button>
+    </div>
+    <select id="cat" aria-label="Themenbereich"></select>
+    <div class="page"><div class="card" id="card">
+      <div class="lbl" id="q-lbl"></div>
+      <div class="word" id="q"></div>
+      <div class="answer hidden" id="a-wrap">
+        <div class="lbl" id="a-lbl"></div>
+        <div class="word" id="a"></div>
+      </div>
+      <div class="conj hidden" id="conj" lang="fr"></div>
+    </div></div>
+    <div class="row" id="row-ask">
+      <button class="btn round ghost" id="say" aria-label="Französisch anhören">🔊</button>
+      <button class="btn" id="reveal">Aufdecken</button>
+    </div>
+    <div class="row hidden" id="row-rate">
+      <button class="btn round ghost" id="say2" aria-label="Noch einmal anhören">🔊</button>
+      <button class="btn again" id="again">Nochmal</button>
+      <button class="btn good" id="knew">Gewusst</button>
+    </div>
+    <div class="row hidden" id="row-conj"><button class="btn ghost" id="say-conj">🔊 Alle Formen anhören</button></div>
+    <p class="note" id="tts-note"></p>
+  </section>
+
+  <!-- ÜBERSETZEN -->
+  <section id="v-trans" class="hidden">
+    <button class="mic" id="mic" aria-label="Deutsch einsprechen">🎙️</button>
+    <p class="note" id="mic-note" style="text-align:center;margin:0">Antippen und einen deutschen Satz sprechen</p>
+    <textarea id="de-in" placeholder="… oder hier deutsch eintippen" lang="de"></textarea>
+    <div class="row"><button class="btn" id="go">Übersetzen</button></div>
+    <p class="note" id="tr-help">Die Übersetzung erscheint hier und wird vorgelesen:</p>
+    <input type="text" id="fr-in" placeholder="Französische Übersetzung" lang="fr" autocapitalize="off">
+    <div class="row"><button class="btn ghost" id="say-fr">🔊 Anhören</button><button class="btn ghost" id="keep">Als Vokabel speichern</button></div>
+    <p class="note" id="tr-note"></p>
+  </section>
+
+  <!-- WÖRTER -->
+  <section id="v-words" class="hidden">
+    <h2>Neues Wort</h2>
+    <input type="text" id="n-fr" placeholder="Französisch, z. B. la dépanneuse" lang="fr" autocapitalize="off">
+    <input type="text" id="n-de" placeholder="Deutsch, z. B. der Abschleppwagen" lang="de">
+    <div class="row"><button class="btn" id="add">Hinzufügen</button></div>
+    <details>
+      <summary class="note" style="cursor:pointer">Mehrere auf einmal einfügen</summary>
+      <p class="note">Eine Zeile pro Wort: <b>französisch = deutsch</b></p>
+      <textarea id="bulk" placeholder="le col = der Pass&#10;la vache = die Kuh"></textarea>
+      <div class="row" style="margin-top:.6rem"><button class="btn ghost" id="bulk-add">Alle übernehmen</button></div>
+    </details>
+    <h2>Meine Wörter <span class="note" id="count"></span></h2>
+    <select id="cat2" aria-label="Themenbereich der Liste"></select>
+    <ul class="list" id="list"></ul>
+    <div class="row"><button class="btn ghost" id="reset-prog">Lernstand zurücksetzen</button></div>
+    <p class="note">Dein Lernstand wird auf diesem Gerät im Browser gespeichert.</p>
+    <p class="note">Stimme: Kokoro-82M (Apache 2.0), französische Sprecherin auf Basis des SIWIS-Datensatzes (CC BY 4.0). Selbst angelegte Wörter liest die Stimme deines Geräts vor.</p>
+  </section>
+</div>
+
+<script>
+const RAW = `
+#Verben
+être|sein|suis,es,est,sommes,êtes,sont
+avoir|haben|ai,as,a,avons,avez,ont
+aller|gehen / fahren|vais,vas,va,allons,allez,vont
+faire|machen|fais,fais,fait,faisons,faites,font
+dire|sagen|dis,dis,dit,disons,dites,disent
+pouvoir|können|peux,peux,peut,pouvons,pouvez,peuvent
+vouloir|wollen|veux,veux,veut,voulons,voulez,veulent
+savoir|wissen|sais,sais,sait,savons,savez,savent
+devoir|müssen|dois,dois,doit,devons,devez,doivent
+voir|sehen|vois,vois,voit,voyons,voyez,voient
+venir|kommen|viens,viens,vient,venons,venez,viennent
+prendre|nehmen|prends,prends,prend,prenons,prenez,prennent
+mettre|legen / stellen|mets,mets,met,mettons,mettez,mettent
+parler|sprechen|=
+aimer|lieben / mögen|=
+manger|essen|mange,manges,mange,mangeons,mangez,mangent
+boire|trinken|bois,bois,boit,buvons,buvez,boivent
+donner|geben|=
+trouver|finden|=
+penser|denken|=
+croire|glauben|crois,crois,croit,croyons,croyez,croient
+partir|abfahren / weggehen|pars,pars,part,partons,partez,partent
+sortir|hinausgehen / ausgehen|sors,sors,sort,sortons,sortez,sortent
+arriver|ankommen|=
+rester|bleiben|=
+passer|vorbeigehen / verbringen|=
+entrer|hineingehen|=
+monter|hinaufgehen / einsteigen|=
+descendre|hinuntergehen / aussteigen|descends,descends,descend,descendons,descendez,descendent
+regarder|anschauen|=
+écouter|zuhören|=
+entendre|hören|entends,entends,entend,entendons,entendez,entendent
+comprendre|verstehen|comprends,comprends,comprend,comprenons,comprenez,comprennent
+apprendre|lernen|apprends,apprends,apprend,apprenons,apprenez,apprennent
+attendre|warten|attends,attends,attend,attendons,attendez,attendent
+chercher|suchen|=
+demander|fragen / bitten|=
+répondre|antworten|réponds,réponds,répond,répondons,répondez,répondent
+acheter|kaufen|achète,achètes,achète,achetons,achetez,achètent
+payer|bezahlen|paie,paies,paie,payons,payez,paient
+vendre|verkaufen|vends,vends,vend,vendons,vendez,vendent
+ouvrir|öffnen|ouvre,ouvres,ouvre,ouvrons,ouvrez,ouvrent
+fermer|schließen|=
+commencer|anfangen|commence,commences,commence,commençons,commencez,commencent
+finir|beenden|finis,finis,finit,finissons,finissez,finissent
+choisir|auswählen|choisis,choisis,choisit,choisissons,choisissez,choisissent
+travailler|arbeiten|=
+habiter|wohnen|=
+vivre|leben|vis,vis,vit,vivons,vivez,vivent
+dormir|schlafen|dors,dors,dort,dormons,dormez,dorment
+lire|lesen|lis,lis,lit,lisons,lisez,lisent
+écrire|schreiben|écris,écris,écrit,écrivons,écrivez,écrivent
+connaître|kennen|connais,connais,connaît,connaissons,connaissez,connaissent
+appeler|rufen / anrufen|appelle,appelles,appelle,appelons,appelez,appellent
+s'appeler|heißen|m'appelle,t'appelles,s'appelle,nous appelons,vous appelez,s'appellent
+aider|helfen|=
+jouer|spielen|=
+marcher|gehen (zu Fuß) / funktionieren|=
+courir|laufen|cours,cours,court,courons,courez,courent
+conduire|fahren (lenken)|conduis,conduis,conduit,conduisons,conduisez,conduisent
+rouler|fahren (rollen)|=
+s'arrêter|stehen bleiben|m'arrête,t'arrêtes,s'arrête,nous arrêtons,vous arrêtez,s'arrêtent
+tomber|fallen|=
+porter|tragen|=
+apporter|bringen|=
+montrer|zeigen|=
+essayer|versuchen|essaie,essaies,essaie,essayons,essayez,essaient
+oublier|vergessen|=
+perdre|verlieren|perds,perds,perd,perdons,perdez,perdent
+gagner|gewinnen / verdienen|=
+tenir|halten|tiens,tiens,tient,tenons,tenez,tiennent
+sentir|fühlen / riechen|sens,sens,sent,sentons,sentez,sentent
+rire|lachen|ris,ris,rit,rions,riez,rient
+envoyer|schicken|envoie,envoies,envoie,envoyons,envoyez,envoient
+recevoir|bekommen|reçois,reçois,reçoit,recevons,recevez,reçoivent
+changer|ändern / wechseln|change,changes,change,changeons,changez,changent
+réparer|reparieren|=
+pousser|schieben / drücken|=
+laver|waschen|=
+#Grundlagen
+Bonjour|Guten Tag
+Bonsoir|Guten Abend
+Salut|Hallo / Tschüss
+Au revoir|Auf Wiedersehen
+Bonne nuit|Gute Nacht
+À bientôt|Bis bald
+À demain|Bis morgen
+oui|ja
+non|nein
+peut-être|vielleicht
+Merci|Danke
+Merci beaucoup|Vielen Dank
+De rien|Gern geschehen
+S'il vous plaît|Bitte (Sie)
+S'il te plaît|Bitte (du)
+Pardon|Verzeihung
+Excusez-moi|Entschuldigen Sie
+Je suis désolé|Es tut mir leid
+D'accord|Einverstanden
+Bien sûr|Natürlich
+Comment allez-vous ?|Wie geht es Ihnen?
+Ça va ?|Wie geht's?
+Ça va bien|Mir geht's gut
+Enchanté|Freut mich
+Je ne comprends pas|Ich verstehe nicht
+Je ne sais pas|Ich weiß nicht
+Parlez-vous allemand ?|Sprechen Sie Deutsch?
+Pouvez-vous répéter ?|Können Sie das wiederholen?
+Plus lentement, s'il vous plaît|Langsamer, bitte
+Je voudrais …|Ich hätte gern …
+Il y a …|Es gibt …
+C'est combien ?|Was kostet das?
+Où sont les toilettes ?|Wo ist die Toilette?
+Au secours !|Hilfe!
+Bon appétit|Guten Appetit
+Santé !|Prost!
+Bonne journée|Schönen Tag
+Bon voyage|Gute Reise
+#Kleine Wörter
+on|man / wir
+moi|ich (betont)
+mon / ma|mein / meine
+ton / ta|dein / deine
+son / sa|sein / ihr
+notre|unser
+votre|euer / Ihr
+ce / cette|dieser / diese
+ça|das
+qui|wer
+quoi|was
+où|wo
+quand|wann
+comment|wie
+pourquoi|warum
+combien|wie viel
+quel / quelle|welcher / welche
+et|und
+ou|oder
+mais|aber
+parce que|weil
+donc|also
+si|wenn / ob
+que|dass
+aussi|auch
+avec|mit
+sans|ohne
+pour|für
+dans|in
+sur|auf
+sous|unter
+devant|vor (Ort)
+derrière|hinter
+entre|zwischen
+chez|bei
+à|in / nach / um
+de|von / aus
+jusqu'à|bis
+pendant|während
+avant|vor (Zeit)
+après|nach
+depuis|seit
+contre|gegen
+près de|in der Nähe von
+loin de|weit weg von
+à côté de|neben
+ici|hier
+là-bas|dort drüben
+très|sehr
+trop|zu viel / zu sehr
+beaucoup|viel
+un peu|ein bisschen
+assez|genug
+plus|mehr
+moins|weniger
+encore|noch
+déjà|schon
+toujours|immer
+souvent|oft
+parfois|manchmal
+jamais|nie
+ne … pas|nicht
+rien|nichts
+tout|alles
+quelque chose|etwas
+quelqu'un|jemand
+personne|niemand
+seulement|nur
+ensemble|zusammen
+vite|schnell (Adverb)
+bien|gut (Adverb)
+mal|schlecht (Adverb)
+#Zeit
+aujourd'hui|heute
+demain|morgen
+hier|gestern
+maintenant|jetzt
+plus tard|später
+bientôt|bald
+tôt|früh
+tard|spät
+le jour|der Tag
+la nuit|die Nacht
+le matin|der Morgen
+l'après-midi|der Nachmittag
+le soir|der Abend
+la semaine|die Woche
+le week-end|das Wochenende
+le mois|der Monat
+l'année|das Jahr
+l'heure|die Stunde / Uhrzeit
+la minute|die Minute
+Quelle heure est-il ?|Wie spät ist es?
+lundi|Montag
+mardi|Dienstag
+mercredi|Mittwoch
+jeudi|Donnerstag
+vendredi|Freitag
+samedi|Samstag
+dimanche|Sonntag
+le printemps|der Frühling
+l'été|der Sommer
+l'automne|der Herbst
+l'hiver|der Winter
+#Zahlen
+zéro|null
+un|eins
+deux|zwei
+trois|drei
+quatre|vier
+cinq|fünf
+six|sechs
+sept|sieben
+huit|acht
+neuf|neun
+dix|zehn
+onze|elf
+douze|zwölf
+vingt|zwanzig
+trente|dreißig
+quarante|vierzig
+cinquante|fünfzig
+soixante|sechzig
+soixante-dix|siebzig
+quatre-vingts|achtzig
+quatre-vingt-dix|neunzig
+cent|hundert
+mille|tausend
+premier / première|erster / erste
+#Menschen
+l'homme|der Mann / der Mensch
+la femme|die Frau
+l'enfant|das Kind
+le garçon|der Bub
+la fille|das Mädchen / die Tochter
+le fils|der Sohn
+l'ami / l'amie|der Freund / die Freundin
+la famille|die Familie
+le père|der Vater
+la mère|die Mutter
+les parents|die Eltern
+le frère|der Bruder
+la sœur|die Schwester
+le mari|der Ehemann
+le grand-père|der Großvater
+la grand-mère|die Großmutter
+monsieur|Herr
+madame|Frau (Anrede)
+les gens|die Leute
+le nom|der Name
+le voisin|der Nachbar
+le médecin|der Arzt
+la police|die Polizei
+#Körper
+la tête|der Kopf
+la main|die Hand
+le bras|der Arm
+la jambe|das Bein
+le pied|der Fuß
+le dos|der Rücken
+le ventre|der Bauch
+les yeux|die Augen
+malade|krank
+J'ai mal à la tête|Ich habe Kopfweh
+la pharmacie|die Apotheke
+l'hôpital|das Krankenhaus
+#Essen & Trinken
+le pain|das Brot
+une baguette|ein Baguette
+le croissant|das Croissant
+le beurre|die Butter
+le fromage|der Käse
+le jambon|der Schinken
+la viande|das Fleisch
+le poulet|das Huhn
+le poisson|der Fisch
+l'œuf|das Ei
+les légumes|das Gemüse
+la salade|der Salat
+la pomme|der Apfel
+la pomme de terre|der Erdapfel
+les frites|die Pommes
+les pâtes|die Nudeln
+la soupe|die Suppe
+le sel|das Salz
+le poivre|der Pfeffer
+le sucre|der Zucker
+le dessert|die Nachspeise
+la glace|das Eis
+le gâteau|der Kuchen
+l'eau|das Wasser
+un café|ein Kaffee
+le thé|der Tee
+le lait|die Milch
+le jus|der Saft
+une bière|ein Bier
+le vin rouge|der Rotwein
+le vin blanc|der Weißwein
+le petit-déjeuner|das Frühstück
+le déjeuner|das Mittagessen
+le dîner|das Abendessen
+le restaurant|das Restaurant
+la carte|die Speisekarte
+L'addition, s'il vous plaît|Die Rechnung, bitte
+la table|der Tisch
+le verre|das Glas
+la bouteille|die Flasche
+l'assiette|der Teller
+le couteau|das Messer
+la fourchette|die Gabel
+la cuillère|der Löffel
+J'ai faim|Ich habe Hunger
+J'ai soif|Ich habe Durst
+C'est délicieux|Das schmeckt köstlich
+#Haus & Alltag
+la maison|das Haus
+l'appartement|die Wohnung
+la chambre|das Zimmer
+la cuisine|die Küche
+la salle de bains|das Badezimmer
+la porte|die Tür
+la fenêtre|das Fenster
+le lit|das Bett
+la chaise|der Sessel
+la clé|der Schlüssel
+le portable|das Handy
+l'ordinateur|der Computer
+le livre|das Buch
+le journal|die Zeitung
+l'argent|das Geld
+le prix|der Preis
+la carte bancaire|die Bankomatkarte
+le magasin|das Geschäft
+le supermarché|der Supermarkt
+le marché|der Markt
+la boulangerie|die Bäckerei
+le travail|die Arbeit
+l'école|die Schule
+les vêtements|die Kleidung
+les chaussures|die Schuhe
+le sac|die Tasche
+le cadeau|das Geschenk
+la chose|die Sache
+#Reise & Natur
+la ville|die Stadt
+le village|das Dorf
+le pays|das Land
+la France|Frankreich
+l'Autriche|Österreich
+la rue|die Straße (im Ort)
+la route|die Straße (Landstraße)
+l'autoroute|die Autobahn
+la place|der Platz
+le centre-ville|das Stadtzentrum
+la gare|der Bahnhof
+l'aéroport|der Flughafen
+le train|der Zug
+le bus|der Bus
+l'avion|das Flugzeug
+le bateau|das Schiff
+le vélo|das Fahrrad
+le billet|die Fahrkarte
+la valise|der Koffer
+le passeport|der Reisepass
+l'hôtel|das Hotel
+la réservation|die Reservierung
+l'entrée|der Eingang
+la sortie|der Ausgang / die Ausfahrt
+à gauche|links
+à droite|rechts
+tout droit|geradeaus
+le nord|der Norden
+le sud|der Süden
+la mer|das Meer
+la plage|der Strand
+la montagne|der Berg
+le lac|der See
+la forêt|der Wald
+le soleil|die Sonne
+la pluie|der Regen
+la neige|der Schnee
+Il fait chaud|Es ist heiß
+Il fait froid|Es ist kalt
+l'église|die Kirche
+le château|das Schloss
+le musée|das Museum
+la banque|die Bank
+ouvert|geöffnet
+fermé|geschlossen
+#Eigenschaften
+bon / bonne|gut
+mauvais|schlecht
+grand|groß
+petit|klein
+beau / belle|schön
+nouveau / nouvelle|neu
+vieux / vieille|alt
+jeune|jung
+chaud|heiß / warm
+froid|kalt
+cher / chère|teuer / lieb
+bon marché|billig
+rapide|schnell
+lent|langsam
+facile|einfach
+difficile|schwierig
+important|wichtig
+possible|möglich
+impossible|unmöglich
+content|zufrieden
+heureux / heureuse|glücklich
+triste|traurig
+fatigué|müde
+fort|stark / laut
+plein|voll
+vide|leer
+propre|sauber
+sale|schmutzig
+long / longue|lang
+court|kurz
+haut|hoch
+lourd|schwer (Gewicht)
+léger / légère|leicht
+libre|frei
+occupé|besetzt / beschäftigt
+gratuit|kostenlos
+prêt|bereit / fertig
+seul|allein
+autre|andere
+dernier / dernière|letzter / letzte
+prochain|nächster
+vrai|wahr / richtig
+faux / fausse|falsch
+gentil / gentille|nett
+drôle|lustig
+dangereux|gefährlich
+cassé|kaputt
+rouge|rot
+bleu|blau
+vert|grün
+jaune|gelb
+noir|schwarz
+blanc / blanche|weiß
+#Rallye & Auto
+la voiture|das Auto
+la panne|die Panne
+Nous sommes en panne|Wir haben eine Panne
+le garagiste|der Mechaniker
+la dépanneuse|der Abschleppwagen
+le pneu crevé|der platte Reifen
+la roue|das Rad
+le moteur|der Motor
+l'huile moteur|das Motoröl
+le liquide de refroidissement|das Kühlwasser
+les freins|die Bremsen
+la batterie|die Batterie
+l'essence|das Benzin
+la station-service|die Tankstelle
+Où est la station-service ?|Wo ist die Tankstelle?
+Le plein, s'il vous plaît|Volltanken, bitte
+le péage|die Maut
+le col|der Pass (Berg)
+le virage|die Kurve
+le permis de conduire|der Führerschein
+l'accident|der Unfall
+le tournevis|der Schraubenzieher
+le ruban adhésif|das Klebeband
+l'escargot|die Schnecke
+la vache|die Kuh
+Ça marche !|Es funktioniert!
+Ça ne marche pas|Es funktioniert nicht
+`;
+const BASE = [], CONJ = {};
+(function(){ let cat="";
+  RAW.trim().split("\n").forEach((l,i)=>{
+    if(l[0]==="#"){ cat=l.slice(1); return; }
+    const [fr,de,cj] = l.split("|");
+    BASE.push({id:"b"+i, fr, de, cat, box:0});
+    if(cj){
+      let forms = cj==="=" ? ["e","es","e","ons","ez","ent"].map(e=>fr.slice(0,-2)+e) : cj.split(",");
+      const el = /^[aeiouyhéèêàâîôû]/i.test(forms[0]);
+      CONJ[fr.toLowerCase()] = [
+        [el?"j'":"je ", forms[0]], ["tu ",forms[1]], ["il / elle ",forms[2]],
+        [/^nous /.test(forms[3])?"nous ":"nous ", forms[3]], ["vous ",forms[4]], ["ils / elles ",forms[5]] ];
+    }
+  });
+})();
+const CATS = [...new Set(BASE.map(w=>w.cat))];
+
+const $ = id => document.getElementById(id);
+const KEY = "carnet-v1";
+
+/* ---------- Zustand: sofort aus dem Browser, danach aus dem Konto ---------- */
+let S = { words: [], ts:0, dir:"fr", slow:false, cat:"", base:0 };
+try { const l = JSON.parse(localStorage.getItem(KEY)); if(l && Array.isArray(l.words)) S = Object.assign(S,l); } catch(e){}
+
+/* Grundwortschatz einmalig einspielen, vorhandenen Lernstand und eigene Wörter behalten */
+function mergeBase(){
+  if(S.base===2) return false;
+  const by = new Map(S.words.map(w=>[w.fr.toLowerCase(), w]));
+  S.words.forEach(w=>{ if(!w.cat) w.cat = "Eigene"; });
+  BASE.forEach(b=>{ const e = by.get(b.fr.toLowerCase());
+    if(e){ e.cat=b.cat; if(String(e.id)[0]==="s") e.de=b.de; } else S.words.push(Object.assign({},b)); });
+  S.base=2; return true;
+}
+mergeBase();
+function save(){
+  S.ts = Date.now();
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){}
+}
+/* ---------- Aussprache ---------- */
+const FRID = {}; BASE.forEach(b=>{ FRID[b.fr.toLowerCase()] = b.id; });
+const player = new Audio(); player.preload = "auto";
+let queue = [];
+function stopAll(){ queue = []; try{ player.pause(); }catch(e){} if("speechSynthesis" in window) speechSynthesis.cancel(); }
+function playNext(){
+  const f = queue.shift(); if(!f) return;
+  player.src = "audio/"+f+".mp3"; player.playbackRate = S.slow ? 0.72 : 1;
+  if("preservesPitch" in player) player.preservesPitch = true;
+  player.play().catch(()=>{});
+}
+player.onended = ()=> setTimeout(playNext, 280);
+player.onerror = ()=> { $("tts-note").textContent = "Die Tondatei konnte nicht geladen werden. Prüfe die Internetverbindung."; playNext(); };
+function playFiles(list){ stopAll(); $("tts-note").textContent=""; queue = list.slice(); playNext(); }
+/* Server-Stimme für alles ohne Aufnahme (Cloudflare Worker, siehe /worker). Leer = Gerätestimme und DeepL-Link */
+const API = "";
+const MAXLEN = 300;
+const ttsCache = new Map();
+async function apiSpeak(text){
+  const k = (S.slow?"s|":"n|")+text;
+  if(!ttsCache.has(k)){
+    const r = await fetch(API+"/tts", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({text, slow:!!S.slow})});
+    if(!r.ok) throw new Error(r.status);
+    if(ttsCache.size>40) ttsCache.clear();
+    ttsCache.set(k, URL.createObjectURL(await r.blob()));
+  }
+  player.src = ttsCache.get(k); player.playbackRate = 1;
+  await player.play();
+}
+/* Gerätestimme: Notlösung, wenn der Server nicht erreichbar ist */
+const clean = t => t.replace(/\(.*?\)/g,"").replace(/\s*\/\s*/g,", ").replace(/\s*…\s*/g," ").replace(/\s+([?!:;])/g,"$1").trim();
+function deviceSpeak(text){
+  if(!("speechSynthesis" in window)) return;
+  const v = speechSynthesis.getVoices().filter(x=>/^fr/i.test(x.lang))
+    .sort((a,b)=>(/natural|premium|enhanced|google|siri/i.test(b.name)?1:0)-(/natural|premium|enhanced|google|siri/i.test(a.name)?1:0))[0];
+  const u = new SpeechSynthesisUtterance(clean(text)); u.lang = v ? v.lang : "fr-FR"; if(v) u.voice = v; u.rate = S.slow?0.65:0.92;
+  speechSynthesis.speak(u);
+}
+function speak(text){
+  if(!text) return;
+  const id = FRID[text.toLowerCase()];
+  if(id) return playFiles([id]);
+  stopAll();
+  const t = clean(text);
+  if(API && t.length<=MAXLEN) apiSpeak(t).catch(()=>deviceSpeak(text)); else deviceSpeak(text);
+}
+
+/* ---------- Lernen ---------- */
+let cur = null, lastId = null;
+function pick(){
+  const all = S.words.filter(w=>!S.cat || w.cat===S.cat);
+  const pool = all.filter(w=>w.id!==lastId || all.length===1);
+  if(!pool.length) return null;
+  const wts = pool.map(w=>1/Math.pow(2.2, w.box||0));
+  let r = Math.random()*wts.reduce((a,b)=>a+b,0);
+  for(let i=0;i<pool.length;i++){ r-=wts[i]; if(r<=0) return pool[i]; }
+  return pool[pool.length-1];
+}
+function next(){
+  cur = pick();
+  $("a-wrap").classList.add("hidden"); $("row-rate").classList.add("hidden"); $("row-ask").classList.remove("hidden");
+  $("conj").classList.add("hidden"); $("row-conj").classList.add("hidden");
+  if(!cur){ $("q-lbl").textContent=""; $("q").textContent="In diesem Bereich sind noch keine Wörter."; $("q").className="word de";
+    $("reveal").disabled = $("say").disabled = true; return; }
+  $("reveal").disabled = $("say").disabled = false;
+  lastId = cur.id;
+  const frFirst = S.dir==="fr";
+  $("q-lbl").textContent = frFirst ? "Français" : "Deutsch";
+  $("a-lbl").textContent = frFirst ? "Deutsch" : "Français";
+  $("q").textContent = frFirst ? cur.fr : cur.de;   $("q").className = "word" + (frFirst?"":" de");  $("q").lang = frFirst?"fr":"de";
+  $("a").textContent = frFirst ? cur.de : cur.fr;   $("a").className = "word" + (frFirst?" de":""); $("a").lang = frFirst?"de":"fr";
+  $("say").classList.toggle("hidden", !frFirst);   // bei Deutsch → Französisch nicht vorher verraten
+}
+$("reveal").onclick = ()=>{
+  $("a-wrap").classList.remove("hidden"); $("row-ask").classList.add("hidden"); $("row-rate").classList.remove("hidden");
+  const cj = CONJ[cur.fr.toLowerCase()];
+  if(cj){
+    const box = $("conj"); box.textContent = "";
+    const vid = FRID[cur.fr.toLowerCase()];
+    cj.forEach(([p,f],n)=>{ const b=document.createElement("button"); const i=document.createElement("i"); i.textContent=p;
+      b.append(i, document.createTextNode(f)); b.onclick=()=>playFiles([vid+"_"+n]); box.append(b); });
+    box.classList.remove("hidden"); $("row-conj").classList.remove("hidden");
+  }
+  speak(cur.fr);
+};
+$("say-conj").onclick = ()=>{ const vid = cur && FRID[cur.fr.toLowerCase()]; if(vid && CONJ[cur.fr.toLowerCase()]) playFiles([0,1,2,3,4,5].map(n=>vid+"_"+n)); };
+$("say").onclick = $("say2").onclick = ()=> cur && speak(cur.fr);
+$("knew").onclick  = ()=>{ cur.box = Math.min(4,(cur.box||0)+1); save(); stats(); next(); };
+$("again").onclick = ()=>{ cur.box = 0; save(); stats(); next(); };
+function setDir(d){ S.dir=d; $("dir-fr").setAttribute("aria-pressed", d==="fr"); $("dir-de").setAttribute("aria-pressed", d==="de"); save(); next(); }
+$("dir-fr").onclick = ()=>setDir("fr");  $("dir-de").onclick = ()=>setDir("de");
+$("slow").onclick = ()=>{ S.slow=!S.slow; $("slow").setAttribute("aria-pressed",S.slow); save(); };
+
+function stats(){
+  const set = S.words.filter(w=>!S.cat || w.cat===S.cat);
+  const n=set.length, ok=set.filter(w=>(w.box||0)>=3).length;
+  $("stat").textContent = n ? `${ok} von ${n} sitzen` : "";
+  $("count").textContent = `(${S.words.length})`;
+}
+
+/* ---------- Wörter ---------- */
+const uid = ()=>"w"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function addWord(fr,de){
+  fr=(fr||"").trim(); de=(de||"").trim(); if(!fr||!de) return false;
+  if(S.words.some(w=>w.fr.toLowerCase()===fr.toLowerCase())) return false;
+  S.words.unshift({id:uid(), fr, de, box:0, cat:"Eigene"}); return true;
+}
+let listCat = "Eigene";
+function renderList(){
+  const ul=$("list"); ul.textContent="";
+  S.words.filter(w=>!listCat || w.cat===listCat).forEach(w=>{
+    const li=document.createElement("li");
+    const d=document.createElement("div"); d.className="w";
+    const b=document.createElement("b"); b.textContent=w.fr; b.lang="fr";
+    const s=document.createElement("span"); s.textContent=w.de;
+    if(CONJ[w.fr.toLowerCase()]){ const t=document.createElement("span"); t.className="tag"; t.textContent="Verb"; b.append(t); }
+    d.append(b,s);
+    const dots=document.createElement("span"); dots.className="dots"; dots.textContent="●".repeat(w.box||0); dots.title="Lernstufe";
+    const p=document.createElement("button"); p.textContent="🔊"; p.setAttribute("aria-label",w.fr+" anhören"); p.onclick=()=>speak(w.fr);
+    const x=document.createElement("button"); x.textContent="✕"; x.setAttribute("aria-label",w.fr+" löschen");
+    x.onclick=()=>{ S.words=S.words.filter(v=>v.id!==w.id); save(); renderAll(); if(cur&&cur.id===w.id) next(); };
+    li.append(d,dots,p,x); ul.append(li);
+  });
+}
+$("add").onclick = ()=>{
+  if(addWord($("n-fr").value,$("n-de").value)){ $("n-fr").value=$("n-de").value=""; save(); renderAll(); if(!cur) next(); $("n-fr").focus(); }
+};
+$("bulk-add").onclick = ()=>{
+  let n=0; $("bulk").value.split("\n").forEach(l=>{ const m=l.split(/\s*[=;\t]\s*/); if(m.length>=2 && addWord(m[0],m.slice(1).join(", "))) n++; });
+  if(n){ $("bulk").value=""; save(); renderAll(); if(!cur) next(); }
+};
+$("reset-prog").onclick = ()=>{ S.words.forEach(w=>w.box=0); save(); renderAll(); };
+function fillCats(){
+  const present = [...CATS, "Eigene"].filter(c=>S.words.some(w=>w.cat===c));
+  [["cat","Alle Themen",S.cat],["cat2","Alle Wörter",listCat]].forEach(([id,all,val])=>{
+    const sel=$(id); sel.textContent="";
+    [["",all],...present.map(c=>[c,c])].forEach(([v,t])=>{ const o=document.createElement("option"); o.value=v;
+      o.textContent = t+" ("+S.words.filter(w=>!v||w.cat===v).length+")"; sel.append(o); });
+    sel.value = present.includes(val) ? val : "";
+  });
+  if(!present.includes(S.cat)) S.cat="";
+  if(!present.includes(listCat)) listCat="";
+}
+$("cat").onchange = e=>{ S.cat=e.target.value; save(); stats(); next(); };
+$("cat2").onchange = e=>{ listCat=e.target.value; renderList(); };
+function renderAll(){
+  fillCats(); stats(); renderList();
+  $("dir-fr").setAttribute("aria-pressed", S.dir==="fr"); $("dir-de").setAttribute("aria-pressed", S.dir==="de");
+  $("slow").setAttribute("aria-pressed", !!S.slow);
+}
+
+/* ---------- Übersetzen ---------- */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec=null, listening=false;
+const micFail = msg => { $("mic-note").textContent = msg; $("mic-note").classList.add("warn"); };
+if(!SR) micFail("Spracheingabe geht in diesem Browser nicht direkt. Tipp: ins Textfeld tippen und das Mikrofon auf deiner Handy-Tastatur benutzen.");
+$("mic").onclick = ()=>{
+  if(!SR){ $("de-in").focus(); return; }
+  if(listening){ rec.stop(); return; }
+  rec = new SR(); rec.lang="de-AT"; rec.interimResults=true; rec.continuous=false;
+  let finalText="";
+  rec.onstart = ()=>{ listening=true; $("mic").classList.add("live"); $("mic-note").classList.remove("warn"); $("mic-note").textContent="Ich höre zu …"; };
+  rec.onresult = e=>{ let t=""; for(const r of e.results){ t+=r[0].transcript; } $("de-in").value=t; if(e.results[e.results.length-1].isFinal) finalText=t; };
+  rec.onerror = e=>{
+    if(e.error==="not-allowed"||e.error==="service-not-allowed") micFail("Das Mikrofon ist hier gesperrt. Tipp: ins Textfeld tippen und das Mikrofon auf deiner Handy-Tastatur benutzen.");
+    else if(e.error!=="aborted"&&e.error!=="no-speech") micFail("Das hat nicht geklappt. Probier es noch einmal oder tippe den Satz.");
+  };
+  rec.onend = ()=>{ listening=false; $("mic").classList.remove("live");
+    if(!$("mic-note").classList.contains("warn")) $("mic-note").textContent="Antippen und einen deutschen Satz sprechen";
+  };
+  try{ rec.start(); }catch(e){ micFail("Das Mikrofon lässt sich nicht starten. Tippe den Satz bitte ein."); }
+};
+
+async function translate(){
+  const de = $("de-in").value.trim(); if(!de) return;
+  if(!API){ window.open("https://www.deepl.com/translator#de/fr/"+encodeURIComponent(de), "_blank", "noopener"); return; }
+  if(de.length>MAXLEN){ $("tr-note").textContent = "Bitte höchstens "+MAXLEN+" Zeichen auf einmal."; return; }
+  $("go").disabled = true; $("tr-note").textContent = "Übersetze …";
+  try{
+    const r = await fetch(API+"/translate", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({text:de})});
+    const j = await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(j.message || "");
+    $("fr-in").value = j.fr; $("tr-note").textContent = "";
+    speak(j.fr);
+  }catch(e){ $("tr-note").textContent = e.message || "Die Übersetzung hat nicht geklappt. Prüfe die Internetverbindung."; }
+  $("go").disabled = false;
+}
+$("go").onclick = translate;
+$("say-fr").onclick = ()=> speak($("fr-in").value.trim());
+if(!API){ $("go").textContent = "Übersetzen (öffnet DeepL)"; $("tr-help").textContent = "DeepL zeigt dir die Übersetzung und liest sie vor. Wenn du den Satz lernen willst, kopiere ihn hier herein:"; }
+$("keep").onclick = ()=>{
+  if(addWord($("fr-in").value, $("de-in").value)){ save(); renderAll(); $("fr-in").value=""; $("tr-note").textContent="Gespeichert. Du findest den Satz unter „Wörter“ im Bereich „Eigene“."; }
+  else $("tr-note").textContent="Bitte deutschen Satz und französische Übersetzung ausfüllen.";
+};
+
+/* ---------- Reiter ---------- */
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected", x===b));
+  ["learn","trans","words"].forEach(v=>$("v-"+v).classList.toggle("hidden", v!==b.dataset.v));
+  stopAll();
+});
+
+renderAll(); next();
+</script>
+</body>
+</html>

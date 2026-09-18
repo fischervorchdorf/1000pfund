@@ -1,0 +1,9 @@
+name = "sprache-api"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# Höchstens 20 Anfragen pro Minute und IP
+[[ratelimits]]
+name = "LIMITER"
+namespace_id = "1001"
+simple = { limit = 20, period = 60 }
