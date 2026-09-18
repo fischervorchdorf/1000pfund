@@ -30,6 +30,9 @@ header{display:flex; align-items:baseline; justify-content:space-between; gap:1r
 h1{font:700 1.7rem/1 var(--display); margin:0}
 h1 span{color:var(--margin)}
 .stat{font-size:.85rem; color:var(--soft); text-align:right}
+.flags{display:flex; gap:.4rem; justify-content:flex-end; margin-bottom:.3rem}
+.flags button{width:2.9rem; height:2.4rem; border-radius:.7rem; border:2px solid transparent; background:transparent; font-size:1.5rem; line-height:1; cursor:pointer; opacity:.45; padding:0}
+.flags button[aria-pressed="true"]{border-color:var(--ink); background:var(--paper); opacity:1}
 
 .tabs{display:grid; grid-template-columns:1fr 1fr auto; gap:.5rem}
 .tabs button{min-height:3.25rem; border-radius:.9rem; border:2px solid var(--ink); background:transparent; color:var(--ink);
@@ -120,7 +123,13 @@ section{display:flex; flex-direction:column; gap:1rem}
 <div class="app">
   <header>
     <div><a href="../" style="font-size:.85rem;color:var(--soft);text-decoration:none">← 1000 Pfund Rallye</a><h1>Carnet<span>.</span></h1></div>
-    <div class="stat" id="stat"></div>
+    <div>
+      <div class="flags" role="group" aria-label="Sprache wählen">
+        <button id="lang-fr" aria-pressed="true" aria-label="Französisch" title="Französisch">🇫🇷</button>
+        <button id="lang-it" aria-pressed="false" aria-label="Italienisch" title="Italienisch">🇮🇹</button>
+      </div>
+      <div class="stat" id="stat"></div>
+    </div>
   </header>
 
   <nav class="tabs" role="tablist">
@@ -179,7 +188,7 @@ section{display:flex; flex-direction:column; gap:1rem}
     <div class="row"><button class="btn" id="add">Hinzufügen</button></div>
     <details>
       <summary class="note" style="cursor:pointer">Mehrere auf einmal einfügen</summary>
-      <p class="note">Eine Zeile pro Wort: <b>französisch = deutsch</b></p>
+      <p class="note">Eine Zeile pro Wort: <b id="bulk-hint">französisch = deutsch</b></p>
       <textarea id="bulk" placeholder="le col = der Pass&#10;la vache = die Kuh"></textarea>
       <div class="row" style="margin-top:.6rem"><button class="btn ghost" id="bulk-add">Alle übernehmen</button></div>
     </details>
@@ -188,12 +197,12 @@ section{display:flex; flex-direction:column; gap:1rem}
     <ul class="list" id="list"></ul>
     <div class="row"><button class="btn ghost" id="reset-prog">Lernstand zurücksetzen</button></div>
     <p class="note">Dein Lernstand wird auf diesem Gerät im Browser gespeichert.</p>
-    <p class="note">Stimme: Kokoro-82M (Apache 2.0), französische Sprecherin auf Basis des SIWIS-Datensatzes (CC BY 4.0). Selbst angelegte Wörter liest die Stimme deines Geräts vor.</p>
+    <p class="note" id="voice-note">Stimme: Kokoro-82M (Apache 2.0), französische Sprecherin auf Basis des SIWIS-Datensatzes (CC BY 4.0). Selbst angelegte Wörter liest die Stimme deines Geräts vor.</p>
   </section>
 </div>
 
 <script>
-const RAW = `
+const RAW_FR = `
 #Verben
 être|sein|suis,es,est,sommes,êtes,sont
 avoir|haben|ai,as,a,avons,avez,ont
@@ -686,6 +695,510 @@ la vache|die Kuh
 Ça marche !|Es funktioniert!
 Ça ne marche pas|Es funktioniert nicht
 `;
+const RAW_IT = `
+#Verben
+essere|sein|sono,sei,è,siamo,siete,sono
+avere|haben|ho,hai,ha,abbiamo,avete,hanno
+andare|gehen / fahren|vado,vai,va,andiamo,andate,vanno
+fare|machen|faccio,fai,fa,facciamo,fate,fanno
+dire|sagen|dico,dici,dice,diciamo,dite,dicono
+potere|können|posso,puoi,può,possiamo,potete,possono
+volere|wollen|voglio,vuoi,vuole,vogliamo,volete,vogliono
+sapere|wissen|so,sai,sa,sappiamo,sapete,sanno
+dovere|müssen|devo,devi,deve,dobbiamo,dovete,devono
+vedere|sehen|vedo,vedi,vede,vediamo,vedete,vedono
+venire|kommen|vengo,vieni,viene,veniamo,venite,vengono
+prendere|nehmen|prendo,prendi,prende,prendiamo,prendete,prendono
+mettere|legen / stellen|metto,metti,mette,mettiamo,mettete,mettono
+parlare|sprechen|=
+amare|lieben|=
+mangiare|essen|mangio,mangi,mangia,mangiamo,mangiate,mangiano
+bere|trinken|bevo,bevi,beve,beviamo,bevete,bevono
+dare|geben|do,dai,dà,diamo,date,danno
+trovare|finden|=
+pensare|denken|=
+credere|glauben|credo,credi,crede,crediamo,credete,credono
+partire|abfahren / weggehen|parto,parti,parte,partiamo,partite,partono
+uscire|hinausgehen / ausgehen|esco,esci,esce,usciamo,uscite,escono
+arrivare|ankommen|=
+restare|bleiben|=
+passare|vorbeigehen / verbringen|=
+entrare|hineingehen|=
+salire|hinaufgehen / einsteigen|salgo,sali,sale,saliamo,salite,salgono
+scendere|hinuntergehen / aussteigen|scendo,scendi,scende,scendiamo,scendete,scendono
+guardare|anschauen|=
+ascoltare|zuhören|=
+sentire|hören / spüren|sento,senti,sente,sentiamo,sentite,sentono
+capire|verstehen|capisco,capisci,capisce,capiamo,capite,capiscono
+imparare|lernen|=
+aspettare|warten|=
+cercare|suchen|cerco,cerchi,cerca,cerchiamo,cercate,cercano
+chiedere|fragen / bitten|chiedo,chiedi,chiede,chiediamo,chiedete,chiedono
+rispondere|antworten|rispondo,rispondi,risponde,rispondiamo,rispondete,rispondono
+comprare|kaufen|=
+pagare|bezahlen|pago,paghi,paga,paghiamo,pagate,pagano
+vendere|verkaufen|vendo,vendi,vende,vendiamo,vendete,vendono
+aprire|öffnen|apro,apri,apre,apriamo,aprite,aprono
+chiudere|schließen|chiudo,chiudi,chiude,chiudiamo,chiudete,chiudono
+cominciare|anfangen|comincio,cominci,comincia,cominciamo,cominciate,cominciano
+finire|beenden|finisco,finisci,finisce,finiamo,finite,finiscono
+scegliere|auswählen|scelgo,scegli,sceglie,scegliamo,scegliete,scelgono
+lavorare|arbeiten|=
+abitare|wohnen|=
+vivere|leben|vivo,vivi,vive,viviamo,vivete,vivono
+dormire|schlafen|dormo,dormi,dorme,dormiamo,dormite,dormono
+leggere|lesen|leggo,leggi,legge,leggiamo,leggete,leggono
+scrivere|schreiben|scrivo,scrivi,scrive,scriviamo,scrivete,scrivono
+conoscere|kennen|conosco,conosci,conosce,conosciamo,conoscete,conoscono
+chiamare|rufen / anrufen|=
+chiamarsi|heißen|mi chiamo,ti chiami,si chiama,ci chiamiamo,vi chiamate,si chiamano
+aiutare|helfen|=
+giocare|spielen|gioco,giochi,gioca,giochiamo,giocate,giocano
+camminare|gehen (zu Fuß)|=
+correre|laufen|corro,corri,corre,corriamo,correte,corrono
+guidare|fahren (lenken)|=
+viaggiare|reisen / unterwegs sein|viaggio,viaggi,viaggia,viaggiamo,viaggiate,viaggiano
+fermarsi|stehen bleiben|mi fermo,ti fermi,si ferma,ci fermiamo,vi fermate,si fermano
+cadere|fallen|cado,cadi,cade,cadiamo,cadete,cadono
+portare|tragen / bringen|=
+tornare|zurückkommen|=
+mostrare|zeigen|=
+provare|versuchen / probieren|=
+dimenticare|vergessen|dimentico,dimentichi,dimentica,dimentichiamo,dimenticate,dimenticano
+perdere|verlieren|perdo,perdi,perde,perdiamo,perdete,perdono
+vincere|gewinnen|vinco,vinci,vince,vinciamo,vincete,vincono
+tenere|halten|tengo,tieni,tiene,teniamo,tenete,tengono
+sentirsi|sich fühlen|mi sento,ti senti,si sente,ci sentiamo,vi sentite,si sentono
+ridere|lachen|rido,ridi,ride,ridiamo,ridete,ridono
+mandare|schicken|=
+ricevere|bekommen|ricevo,ricevi,riceve,riceviamo,ricevete,ricevono
+cambiare|ändern / wechseln|cambio,cambi,cambia,cambiamo,cambiate,cambiano
+riparare|reparieren|=
+spingere|schieben / drücken|spingo,spingi,spinge,spingiamo,spingete,spingono
+lavare|waschen|=
+#Grundlagen
+Buongiorno|Guten Tag
+Buonasera|Guten Abend
+Ciao|Hallo / Tschüss
+Arrivederci|Auf Wiedersehen
+Buonanotte|Gute Nacht
+A presto|Bis bald
+A domani|Bis morgen
+sì|ja
+no|nein
+forse|vielleicht
+Grazie|Danke
+Grazie mille|Vielen Dank
+Prego|Gern geschehen / Bitte sehr
+Per favore|Bitte
+Scusa|Entschuldige (du)
+Scusi|Entschuldigen Sie
+Permesso|Darf ich vorbei?
+Mi dispiace|Es tut mir leid
+D'accordo|Einverstanden
+Certo|Natürlich
+Come sta?|Wie geht es Ihnen?
+Come va?|Wie geht's?
+Sto bene|Mir geht's gut
+Piacere|Freut mich
+Non capisco|Ich verstehe nicht
+Non lo so|Ich weiß nicht
+Parla tedesco?|Sprechen Sie Deutsch?
+Può ripetere?|Können Sie das wiederholen?
+Più lentamente, per favore|Langsamer, bitte
+Vorrei …|Ich hätte gern …
+C'è …|Es gibt …
+Quanto costa?|Was kostet das?
+Dov'è il bagno?|Wo ist die Toilette?
+Aiuto!|Hilfe!
+Buon appetito|Guten Appetit
+Salute!|Prost!
+Buona giornata|Schönen Tag
+Buon viaggio|Gute Reise
+#Kleine Wörter
+si|man
+io|ich
+mio / mia|mein / meine
+tuo / tua|dein / deine
+suo / sua|sein / ihr
+nostro|unser
+vostro|euer
+questo / questa|dieser / diese
+quello / quella|jener / jene
+chi|wer
+che cosa|was
+dove|wo
+quando|wann
+come|wie
+perché|warum / weil
+quanto|wie viel
+quale|welcher / welche
+e|und
+o|oder
+ma|aber
+allora|dann / also
+quindi|also / deshalb
+se|wenn / ob
+che|dass
+anche|auch
+con|mit
+senza|ohne
+per|für
+in|in
+su|auf
+sotto|unter
+davanti a|vor (Ort)
+dietro|hinter
+tra / fra|zwischen
+da|bei / von / seit
+a|in / nach / um
+di|von / aus
+fino a|bis
+durante|während
+prima|vorher / vor (Zeit)
+dopo|nach
+verso|gegen / in Richtung
+contro|gegen
+vicino a|in der Nähe von
+lontano da|weit weg von
+accanto a|neben
+qui|hier
+laggiù|dort drüben
+molto|sehr / viel
+troppo|zu viel / zu sehr
+tanto|so viel / so sehr
+un po'|ein bisschen
+abbastanza|genug
+più|mehr
+meno|weniger
+ancora|noch
+già|schon
+sempre|immer
+spesso|oft
+a volte|manchmal
+mai|nie
+non|nicht
+niente|nichts
+tutto|alles
+qualcosa|etwas
+qualcuno|jemand
+nessuno|niemand
+soltanto|nur
+insieme|zusammen
+velocemente|schnell (Adverb)
+bene|gut (Adverb)
+male|schlecht (Adverb)
+#Zeit
+oggi|heute
+domani|morgen
+ieri|gestern
+adesso|jetzt
+più tardi|später
+fra poco|bald
+presto|früh
+tardi|spät
+il giorno|der Tag
+la notte|die Nacht
+la mattina|der Morgen
+il pomeriggio|der Nachmittag
+la sera|der Abend
+la settimana|die Woche
+il fine settimana|das Wochenende
+il mese|der Monat
+l'anno|das Jahr
+l'ora|die Stunde / Uhrzeit
+il minuto|die Minute
+Che ore sono?|Wie spät ist es?
+lunedì|Montag
+martedì|Dienstag
+mercoledì|Mittwoch
+giovedì|Donnerstag
+venerdì|Freitag
+sabato|Samstag
+domenica|Sonntag
+la primavera|der Frühling
+l'estate|der Sommer
+l'autunno|der Herbst
+l'inverno|der Winter
+#Zahlen
+zero|null
+uno|eins
+due|zwei
+tre|drei
+quattro|vier
+cinque|fünf
+sei|sechs
+sette|sieben
+otto|acht
+nove|neun
+dieci|zehn
+undici|elf
+dodici|zwölf
+venti|zwanzig
+trenta|dreißig
+quaranta|vierzig
+cinquanta|fünfzig
+sessanta|sechzig
+settanta|siebzig
+ottanta|achtzig
+novanta|neunzig
+cento|hundert
+mille|tausend
+primo / prima|erster / erste
+#Menschen
+l'uomo|der Mann / der Mensch
+la donna|die Frau
+il bambino / la bambina|das Kind
+il ragazzo|der Bub
+la ragazza|das Mädchen
+il figlio / la figlia|der Sohn / die Tochter
+l'amico / l'amica|der Freund / die Freundin
+la famiglia|die Familie
+il padre|der Vater
+la madre|die Mutter
+i genitori|die Eltern
+il fratello|der Bruder
+la sorella|die Schwester
+il marito|der Ehemann
+la moglie|die Ehefrau
+il nonno|der Großvater
+la nonna|die Großmutter
+signore|Herr
+signora|Frau (Anrede)
+la gente|die Leute
+il nome|der Name
+il vicino|der Nachbar
+il medico|der Arzt
+la polizia|die Polizei
+#Körper
+la testa|der Kopf
+la mano|die Hand
+il braccio|der Arm
+la gamba|das Bein
+il piede|der Fuß
+la schiena|der Rücken
+la pancia|der Bauch
+gli occhi|die Augen
+malato|krank
+Ho mal di testa|Ich habe Kopfweh
+la farmacia|die Apotheke
+l'ospedale|das Krankenhaus
+#Essen & Trinken
+il pane|das Brot
+un panino|ein belegtes Weckerl
+il cornetto|das Croissant
+il burro|die Butter
+il formaggio|der Käse
+il prosciutto|der Schinken
+la carne|das Fleisch
+il pollo|das Huhn
+il pesce|der Fisch
+l'uovo|das Ei
+la verdura|das Gemüse
+l'insalata|der Salat
+la mela|der Apfel
+la patata|der Erdapfel
+le patatine fritte|die Pommes
+la pasta|die Nudeln
+la zuppa|die Suppe
+il sale|das Salz
+il pepe|der Pfeffer
+lo zucchero|der Zucker
+il dolce|die Nachspeise
+il gelato|das Eis
+la torta|der Kuchen
+l'acqua|das Wasser
+un caffè|ein Kaffee
+il tè|der Tee
+il latte|die Milch
+il succo|der Saft
+una birra|ein Bier
+il vino rosso|der Rotwein
+il vino bianco|der Weißwein
+la colazione|das Frühstück
+il pranzo|das Mittagessen
+la cena|das Abendessen
+il ristorante|das Restaurant
+il menù|die Speisekarte
+Il conto, per favore|Die Rechnung, bitte
+il tavolo|der Tisch
+il bicchiere|das Glas
+la bottiglia|die Flasche
+il piatto|der Teller
+il coltello|das Messer
+la forchetta|die Gabel
+il cucchiaio|der Löffel
+Ho fame|Ich habe Hunger
+Ho sete|Ich habe Durst
+È delizioso|Das schmeckt köstlich
+#Haus & Alltag
+la casa|das Haus
+l'appartamento|die Wohnung
+la camera|das Zimmer
+la cucina|die Küche
+il bagno|das Badezimmer / die Toilette
+la porta|die Tür
+la finestra|das Fenster
+il letto|das Bett
+la sedia|der Sessel
+la chiave|der Schlüssel
+il cellulare|das Handy
+il computer|der Computer
+il libro|das Buch
+il giornale|die Zeitung
+i soldi|das Geld
+il prezzo|der Preis
+il bancomat|die Bankomatkarte / der Bankomat
+il negozio|das Geschäft
+il supermercato|der Supermarkt
+il mercato|der Markt
+il panificio|die Bäckerei
+il lavoro|die Arbeit
+la scuola|die Schule
+i vestiti|die Kleidung
+le scarpe|die Schuhe
+la borsa|die Tasche
+il regalo|das Geschenk
+la cosa|die Sache
+#Reise & Natur
+la città|die Stadt
+il paese|das Dorf / das Land
+la regione|die Region
+l'Italia|Italien
+l'Austria|Österreich
+la via|die Straße (im Ort)
+la strada|die Straße (Landstraße)
+l'autostrada|die Autobahn
+la piazza|der Platz
+il centro|das Stadtzentrum
+la stazione|der Bahnhof
+l'aeroporto|der Flughafen
+il treno|der Zug
+l'autobus|der Bus
+l'aereo|das Flugzeug
+la nave|das Schiff
+la bicicletta|das Fahrrad
+il biglietto|die Fahrkarte
+la valigia|der Koffer
+il passaporto|der Reisepass
+l'albergo|das Hotel
+la prenotazione|die Reservierung
+l'entrata|der Eingang
+l'uscita|der Ausgang / die Ausfahrt
+a sinistra|links
+a destra|rechts
+sempre dritto|geradeaus
+il nord|der Norden
+il sud|der Süden
+il mare|das Meer
+la spiaggia|der Strand
+la montagna|der Berg
+il lago|der See
+il bosco|der Wald
+il sole|die Sonne
+la pioggia|der Regen
+la neve|der Schnee
+Fa caldo|Es ist heiß
+Fa freddo|Es ist kalt
+la chiesa|die Kirche
+il castello|das Schloss
+il museo|das Museum
+la banca|die Bank
+aperto|geöffnet
+chiuso|geschlossen
+#Eigenschaften
+buono / buona|gut
+cattivo|schlecht
+grande|groß
+piccolo|klein
+bello / bella|schön
+nuovo / nuova|neu
+vecchio|alt
+giovane|jung
+caldo|heiß / warm
+freddo|kalt
+caro / cara|teuer / lieb
+economico|billig
+veloce|schnell
+lento|langsam
+facile|einfach
+difficile|schwierig
+importante|wichtig
+possibile|möglich
+impossibile|unmöglich
+contento|zufrieden
+felice|glücklich
+triste|traurig
+stanco|müde
+forte|stark / laut
+pieno|voll
+vuoto|leer
+pulito|sauber
+sporco|schmutzig
+lungo|lang
+corto|kurz
+alto|hoch
+pesante|schwer (Gewicht)
+leggero|leicht
+libero|frei
+occupato|besetzt / beschäftigt
+gratis|kostenlos
+pronto|bereit / fertig
+da solo|allein
+altro|andere
+ultimo / ultima|letzter / letzte
+prossimo|nächster
+vero|wahr / richtig
+falso|falsch
+gentile|nett
+divertente|lustig
+pericoloso|gefährlich
+rotto|kaputt
+rosso|rot
+blu|blau
+verde|grün
+giallo|gelb
+nero|schwarz
+bianco / bianca|weiß
+#Rallye & Auto
+la macchina|das Auto
+il guasto|die Panne
+Siamo in panne|Wir haben eine Panne
+il meccanico|der Mechaniker
+il carro attrezzi|der Abschleppwagen
+la gomma a terra|der platte Reifen
+la ruota|das Rad
+il motore|der Motor
+l'olio motore|das Motoröl
+il liquido di raffreddamento|das Kühlwasser
+i freni|die Bremsen
+la batteria|die Batterie
+la benzina|das Benzin
+il distributore|die Tankstelle
+Dov'è il distributore?|Wo ist die Tankstelle?
+Il pieno, per favore|Volltanken, bitte
+il pedaggio|die Maut
+il passo|der Pass (Berg)
+la curva|die Kurve
+la patente|der Führerschein
+l'incidente|der Unfall
+il cacciavite|der Schraubenzieher
+il nastro adesivo|das Klebeband
+la lumaca|die Schnecke
+la mucca|die Kuh
+Funziona!|Es funktioniert!
+Non funziona|Es funktioniert nicht
+`;
+/* ---------- Sprache: Französisch ist Standard, Italienisch über die Flagge ---------- */
+let LANG = "fr"; try { if(localStorage.getItem("carnet-lang")==="it") LANG = "it"; } catch(e){}
+const L = {
+  fr:{ code:"fr", tts:"fr-FR", short:"FR", name:"Französisch", adj:"französisch", label:"Français", key:"carnet-v1",
+       dir:"audio/", ext:".mp3", raw:RAW_FR, ex:"la dépanneuse", bulk:"le col = der Pass\nla vache = die Kuh", title:"Französisch für die Rallye" },
+  it:{ code:"it", tts:"it-IT", short:"IT", name:"Italienisch", adj:"italienisch", label:"Italiano", key:"carnet-it-v1",
+       dir:"audio-it/", ext:".m4a", raw:RAW_IT, ex:"il carro attrezzi", bulk:"il passo = der Pass\nla mucca = die Kuh", title:"Italienisch für die Rallye",
+       voice:"Stimme: „Alice“ (macOS-Sprachausgabe). Selbst angelegte Wörter liest die Stimme deines Geräts vor." }
+}[LANG];
+const RAW = L.raw;
 const BASE = [], CONJ = {};
 (function(){ let cat="";
   RAW.trim().split("\n").forEach((l,i)=>{
@@ -693,6 +1206,11 @@ const BASE = [], CONJ = {};
     const [fr,de,cj] = l.split("|");
     BASE.push({id:"b"+i, fr, de, cat, box:0});
     if(cj){
+      if(LANG==="it"){
+        const f = cj==="=" ? ["o","i","a","iamo","ate","ano"].map(e=>fr.slice(0,-3)+e) : cj.split(",");
+        CONJ[fr.toLowerCase()] = ["io ","tu ","lui / lei ","noi ","voi ","loro "].map((p,n)=>[p,f[n]]);
+        return;
+      }
       let forms = cj==="=" ? ["e","es","e","ons","ez","ent"].map(e=>fr.slice(0,-2)+e) : cj.split(",");
       const el = /^[aeiouyhéèêàâîôû]/i.test(forms[0]);
       CONJ[fr.toLowerCase()] = [
@@ -704,7 +1222,7 @@ const BASE = [], CONJ = {};
 const CATS = [...new Set(BASE.map(w=>w.cat))];
 
 const $ = id => document.getElementById(id);
-const KEY = "carnet-v1";
+const KEY = L.key;
 
 /* ---------- Zustand: sofort aus dem Browser, danach aus dem Konto ---------- */
 let S = { words: [], ts:0, dir:"fr", slow:false, cat:"", base:0 };
@@ -731,7 +1249,7 @@ let queue = [];
 function stopAll(){ queue = []; try{ player.pause(); }catch(e){} if("speechSynthesis" in window) speechSynthesis.cancel(); }
 function playNext(){
   const f = queue.shift(); if(!f) return;
-  player.src = "audio/"+f+".mp3"; player.playbackRate = S.slow ? 0.72 : 1;
+  player.src = L.dir+f+L.ext; player.playbackRate = S.slow ? 0.72 : 1;
   if("preservesPitch" in player) player.preservesPitch = true;
   player.play().catch(()=>{});
 }
@@ -757,9 +1275,9 @@ async function apiSpeak(text){
 const clean = t => t.replace(/\(.*?\)/g,"").replace(/\s*\/\s*/g,", ").replace(/\s*…\s*/g," ").replace(/\s+([?!:;])/g,"$1").trim();
 function deviceSpeak(text){
   if(!("speechSynthesis" in window)) return;
-  const v = speechSynthesis.getVoices().filter(x=>/^fr/i.test(x.lang))
+  const v = speechSynthesis.getVoices().filter(x=>x.lang.toLowerCase().startsWith(L.code))
     .sort((a,b)=>(/natural|premium|enhanced|google|siri/i.test(b.name)?1:0)-(/natural|premium|enhanced|google|siri/i.test(a.name)?1:0))[0];
-  const u = new SpeechSynthesisUtterance(clean(text)); u.lang = v ? v.lang : "fr-FR"; if(v) u.voice = v; u.rate = S.slow?0.65:0.92;
+  const u = new SpeechSynthesisUtterance(clean(text)); u.lang = v ? v.lang : L.tts; if(v) u.voice = v; u.rate = S.slow?0.65:0.92;
   speechSynthesis.speak(u);
 }
 function speak(text){
@@ -768,7 +1286,7 @@ function speak(text){
   if(id) return playFiles([id]);
   stopAll();
   const t = clean(text);
-  if(API && t.length<=MAXLEN) apiSpeak(t).catch(()=>deviceSpeak(text)); else deviceSpeak(text);
+  if(API && LANG==="fr" && t.length<=MAXLEN) apiSpeak(t).catch(()=>deviceSpeak(text)); else deviceSpeak(text);
 }
 
 /* ---------- Lernen ---------- */
@@ -791,10 +1309,10 @@ function next(){
   $("reveal").disabled = $("say").disabled = false;
   lastId = cur.id;
   const frFirst = S.dir==="fr";
-  $("q-lbl").textContent = frFirst ? "Français" : "Deutsch";
-  $("a-lbl").textContent = frFirst ? "Deutsch" : "Français";
-  $("q").textContent = frFirst ? cur.fr : cur.de;   $("q").className = "word" + (frFirst?"":" de");  $("q").lang = frFirst?"fr":"de";
-  $("a").textContent = frFirst ? cur.de : cur.fr;   $("a").className = "word" + (frFirst?" de":""); $("a").lang = frFirst?"de":"fr";
+  $("q-lbl").textContent = frFirst ? L.label : "Deutsch";
+  $("a-lbl").textContent = frFirst ? "Deutsch" : L.label;
+  $("q").textContent = frFirst ? cur.fr : cur.de;   $("q").className = "word" + (frFirst?"":" de");  $("q").lang = frFirst?L.code:"de";
+  $("a").textContent = frFirst ? cur.de : cur.fr;   $("a").className = "word" + (frFirst?" de":""); $("a").lang = frFirst?"de":L.code;
   $("say").classList.toggle("hidden", !frFirst);   // bei Deutsch → Französisch nicht vorher verraten
 }
 $("reveal").onclick = ()=>{
@@ -837,7 +1355,7 @@ function renderList(){
   S.words.filter(w=>!listCat || w.cat===listCat).forEach(w=>{
     const li=document.createElement("li");
     const d=document.createElement("div"); d.className="w";
-    const b=document.createElement("b"); b.textContent=w.fr; b.lang="fr";
+    const b=document.createElement("b"); b.textContent=w.fr; b.lang=L.code;
     const s=document.createElement("span"); s.textContent=w.de;
     if(CONJ[w.fr.toLowerCase()]){ const t=document.createElement("span"); t.className="tag"; t.textContent="Verb"; b.append(t); }
     d.append(b,s);
@@ -899,7 +1417,7 @@ $("mic").onclick = ()=>{
 
 async function translate(){
   const de = $("de-in").value.trim(); if(!de) return;
-  if(!API){ window.open("https://www.deepl.com/translator#de/fr/"+encodeURIComponent(de), "_blank", "noopener"); return; }
+  if(!API || LANG!=="fr"){ window.open("https://www.deepl.com/translator#de/"+L.code+"/"+encodeURIComponent(de), "_blank", "noopener"); return; }
   if(de.length>MAXLEN){ $("tr-note").textContent = "Bitte höchstens "+MAXLEN+" Zeichen auf einmal."; return; }
   $("go").disabled = true; $("tr-note").textContent = "Übersetze …";
   try{
@@ -913,10 +1431,10 @@ async function translate(){
 }
 $("go").onclick = translate;
 $("say-fr").onclick = ()=> speak($("fr-in").value.trim());
-if(!API){ $("go").textContent = "Übersetzen (öffnet DeepL)"; $("tr-help").textContent = "DeepL zeigt dir die Übersetzung und liest sie vor. Wenn du den Satz lernen willst, kopiere ihn hier herein:"; }
+if(!API || LANG!=="fr"){ $("go").textContent = "Übersetzen (öffnet DeepL)"; $("tr-help").textContent = "DeepL zeigt dir die Übersetzung und liest sie vor. Wenn du den Satz lernen willst, kopiere ihn hier herein:"; }
 $("keep").onclick = ()=>{
   if(addWord($("fr-in").value, $("de-in").value)){ save(); renderAll(); $("fr-in").value=""; $("tr-note").textContent="Gespeichert. Du findest den Satz unter „Wörter“ im Bereich „Eigene“."; }
-  else $("tr-note").textContent="Bitte deutschen Satz und französische Übersetzung ausfüllen.";
+  else $("tr-note").textContent="Bitte deutschen Satz und "+L.adj+"e Übersetzung ausfüllen.";
 };
 
 /* ---------- Reiter ---------- */
@@ -925,6 +1443,20 @@ document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
   ["learn","trans","words"].forEach(v=>$("v-"+v).classList.toggle("hidden", v!==b.dataset.v));
   stopAll();
 });
+
+/* ---------- Sprachwahl ---------- */
+document.documentElement.dataset.lang = LANG;
+document.title = L.title+" – 1000 Pfund Rallye";
+$("lang-fr").setAttribute("aria-pressed", LANG==="fr"); $("lang-it").setAttribute("aria-pressed", LANG==="it");
+["fr","it"].forEach(c=>$("lang-"+c).onclick = ()=>{ if(c===LANG) return; try{ localStorage.setItem("carnet-lang", c); }catch(e){} location.reload(); });
+$("dir-fr").textContent = L.short+" → DE"; $("dir-fr").setAttribute("aria-label", L.name+" nach Deutsch");
+$("dir-de").textContent = "DE → "+L.short; $("dir-de").setAttribute("aria-label", "Deutsch nach "+L.name);
+$("say").setAttribute("aria-label", L.name+" anhören");
+$("conj").lang = $("fr-in").lang = $("n-fr").lang = L.code;
+$("fr-in").placeholder = L.name.replace(/isch$/,"ische")+" Übersetzung";
+$("n-fr").placeholder = L.name+", z. B. "+L.ex;
+$("bulk").placeholder = L.bulk; $("bulk-hint").textContent = L.adj+" = deutsch";
+if(L.voice) $("voice-note").textContent = L.voice;
 
 renderAll(); next();
 </script>
