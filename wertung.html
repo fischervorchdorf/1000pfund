@@ -271,6 +271,7 @@
             }
         }
     </style>
+    <script src="sync.js"></script>
 </head>
 <body>
     <div class="container">
@@ -353,6 +354,8 @@
         </div>
 
         <button class="save-button" onclick="saveAllData()">💾 Alle Daten Speichern</button>
+        <button class="save-button" onclick="verbinden()" id="codeButton">🔗 Code für Abgleich</button>
+        <div id="syncStatus" style="text-align:center;margin:10px 0;font-weight:600;color:#495057"></div>
         <button class="reset-button" onclick="resetAllData()">🔄 Alle Daten Zurücksetzen</button>
     </div>
 
@@ -379,7 +382,7 @@
                                id="${day}-team${teamNum}" 
                                placeholder="0" 
                                value="0"
-                               oninput="calculateLeaderboard(); storeData();">
+                               oninput="calculateLeaderboard(); storeData(); eingabeGemacht();">
                     `;
                     container.appendChild(div);
                 });
@@ -390,6 +393,105 @@
             
             // Berechne Rangliste
             calculateLeaderboard();
+
+            starteAbgleich();
+        }
+
+        // ---- Abgleich zwischen Geraeten ----
+        const sync = window.RALLYE_SYNC;
+        let stand = parseInt(localStorage.getItem('rallyeData:stand')) || 0;
+        let letzteEingabe = 0;
+        let sendeTimer;
+
+        function bereit() { return sync && sync.enabled() && sync.hasCode(); }
+
+        function melde(text) {
+            const el = document.getElementById('syncStatus');
+            if (el) el.textContent = text;
+        }
+
+        function felder() {
+            const data = {};
+            days.forEach(day => {
+                teamNames.forEach((_, i) => {
+                    const key = `${day}-team${i + 1}`;
+                    const input = document.getElementById(key);
+                    if (input) data[key] = parseInt(input.value) || 0;
+                });
+            });
+            return data;
+        }
+
+        function uebernehmen(data) {
+            Object.keys(data).forEach(key => {
+                const input = document.getElementById(key);
+                if (input) input.value = data[key];
+            });
+            calculateLeaderboard();
+            storeData();
+        }
+
+        function senden() {
+            if (!bereit()) return;
+            sync.save('wertung', felder()).then(res => {
+                stand = res.updatedAt;
+                localStorage.setItem('rallyeData:stand', stand);
+                melde('✓ geteilt um ' + new Date(stand).toLocaleTimeString('de-AT'));
+            }).catch(err => melde(err.status === 401 ? '⚠️ Code falsch' : '⚠️ offline, nur auf diesem Gerät'));
+        }
+
+        function holen(erstmals) {
+            if (!bereit()) return;
+            if (!erstmals && Date.now() - letzteEingabe < 6000) return;
+            sync.load('wertung').then(res => {
+                if (!res.data || res.updatedAt <= stand) return;
+                stand = res.updatedAt;
+                localStorage.setItem('rallyeData:stand', stand);
+                uebernehmen(res.data);
+                melde('✓ Stand vom Server, ' + new Date(stand).toLocaleTimeString('de-AT'));
+            }).catch(err => melde(err.status === 401 ? '⚠️ Code falsch' : '⚠️ offline, nur auf diesem Gerät'));
+        }
+
+        function verbinden() {
+            if (!sync || !sync.enabled()) {
+                alert('Der Abgleich ist noch nicht eingerichtet. Die Worker-Adresse fehlt in sync.js.');
+                return;
+            }
+            if (!sync.askForCode()) return;
+            stand = 0;
+            holen(true);
+            senden();
+            starteTakt();
+        }
+
+        let taktLaeuft = false;
+        function starteTakt() {
+            if (taktLaeuft || !bereit()) return;
+            taktLaeuft = true;
+            setInterval(() => holen(false), 15000);
+            window.addEventListener('focus', () => holen(false));
+        }
+
+        function starteAbgleich() {
+            if (!sync || !sync.enabled()) {
+                const btn = document.getElementById('codeButton');
+                if (btn) btn.style.display = 'none';
+                return;
+            }
+            if (!sync.hasCode()) {
+                melde('Code eingeben, dann sehen alle Geräte denselben Stand');
+                return;
+            }
+            holen(true);
+            starteTakt();
+        }
+
+        // Merkt sich eine Eingabe und sendet sie kurz darauf zum Server
+        function eingabeGemacht() {
+            letzteEingabe = Date.now();
+            stand = letzteEingabe;
+            clearTimeout(sendeTimer);
+            sendeTimer = setTimeout(senden, 800);
         }
 
         // Speichert still im Hintergrund, ohne Meldung

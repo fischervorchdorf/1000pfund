@@ -1,0 +1,15 @@
+name = "rallye-wertung"
+main = "src/index.js"
+compatibility_date = "2026-09-01"
+
+# Der Speicher für die Punkte. Die id kommt aus:
+#   npx wrangler kv namespace create WERTUNG
+[[kv_namespaces]]
+binding = "WERTUNG"
+id = "HIER_DIE_ID_EINTRAGEN"
+
+# Höchstens 60 Anfragen pro Minute und IP
+[[ratelimits]]
+name = "LIMITER"
+namespace_id = "2001"
+simple = { limit = 60, period = 60 }
