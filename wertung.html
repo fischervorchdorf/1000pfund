@@ -379,7 +379,7 @@
                                id="${day}-team${teamNum}" 
                                placeholder="0" 
                                value="0"
-                               oninput="calculateLeaderboard()">
+                               oninput="calculateLeaderboard(); storeData();">
                     `;
                     container.appendChild(div);
                 });
@@ -392,8 +392,8 @@
             calculateLeaderboard();
         }
 
-        // Speichere alle Daten
-        function saveAllData() {
+        // Speichert still im Hintergrund, ohne Meldung
+        function storeData() {
             const data = {};
             days.forEach(day => {
                 teamNames.forEach((_, teamIndex) => {
@@ -403,9 +403,19 @@
                     data[key] = parseInt(input.value) || 0;
                 });
             });
-            
-            localStorage.setItem('rallyeData', JSON.stringify(data));
-            alert('✅ Daten erfolgreich gespeichert!');
+
+            try {
+                localStorage.setItem('rallyeData', JSON.stringify(data));
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        // Speichert und bestaetigt (Knopf)
+        function saveAllData() {
+            alert(storeData() ? '✅ Daten erfolgreich gespeichert!'
+                              : '⚠️ Dieser Browser speichert nichts (privates Fenster?).');
         }
 
         // Lade gespeicherte Daten
@@ -497,7 +507,7 @@
 
         // Auto-Save beim Verlassen der Seite
         window.addEventListener('beforeunload', function() {
-            saveAllData();
+            storeData();
         });
 
         // Initialisiere beim Laden
