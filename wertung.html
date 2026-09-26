@@ -357,6 +357,7 @@
         <button class="save-button" onclick="saveAllData()">💾 Alle Daten Speichern</button>
         <button class="save-button" onclick="verbinden()" id="codeButton">🔗 Code für Abgleich</button>
         <div id="syncStatus" style="text-align:center;margin:10px 0;font-weight:600;color:#495057"></div>
+        <div id="autoHinweis" style="text-align:center;margin:10px 0;font-weight:600;color:#495057"></div>
         <button class="reset-button" onclick="resetAllData()">🔄 Alle Daten Zurücksetzen</button>
     </div>
 
@@ -396,6 +397,44 @@
             calculateLeaderboard();
 
             starteAbgleich();
+            ausTageswertungen();
+            window.addEventListener('focus', ausTageswertungen);
+            setInterval(ausTageswertungen, 10000);
+        }
+
+        // Holt die Tagessummen je Team aus den sieben Tagesseiten.
+        const TAGE = ['montag', 'dienstag', 'mittwoch', 'donnerstag',
+                      'freitag', 'samstag', 'sonntag'];
+
+        function ausTageswertungen() {
+            let uebernommen = 0;
+            TAGE.forEach((tag, tagIndex) => {
+                let roh;
+                try { roh = localStorage.getItem('rallye:' + tag); } catch (e) { return; }
+                if (!roh) return;
+                let obj;
+                try { obj = JSON.parse(roh); } catch (e) { return; }
+                if (!obj || !obj.teams) return;
+
+                teamNames.forEach((name, teamIndex) => {
+                    const rec = obj.teams[name];
+                    if (!rec || typeof rec.__summe !== 'number') return;
+                    const feld = document.getElementById(`day${tagIndex + 1}-team${teamIndex + 1}`);
+                    if (!feld) return;
+                    if (String(rec.__summe) !== feld.value) feld.value = rec.__summe;
+                    feld.readOnly = true;
+                    feld.title = 'Kommt aus der Tageswertung von ' + tag;
+                    feld.style.background = '#e9ecef';
+                    uebernommen++;
+                });
+            });
+            if (uebernommen) {
+                calculateLeaderboard();
+                storeData();
+                const hinweis = document.getElementById('autoHinweis');
+                if (hinweis) hinweis.textContent =
+                    uebernommen + ' Werte kommen direkt aus den Tageswertungen und sind gesperrt.';
+            }
         }
 
         // ---- Abgleich zwischen Geraeten ----
