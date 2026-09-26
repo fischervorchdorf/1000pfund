@@ -5,7 +5,7 @@ window.RALLYE_TEAMS = [
     { nr: 1, name: 'Stierwoscha',             multiplier: 1.16, startPoints: -314 },
     { nr: 2, name: 'Speedy Triumphales',      multiplier: 1.33, startPoints: 286 },
     { nr: 3, name: 'Crazy Chicken',           multiplier: 1.09, startPoints: -84 },
-    { nr: 4, name: 'Orange Blossom Special',  multiplier: 1.25, startPoints: -104 },
+    { nr: 4, name: 'Orange Blossom Special',  multiplier: 1.86, startPoints: -104 },
     { nr: 5, name: 'Schnuckiputz 1',          multiplier: 1.86, startPoints: -25 },
     { nr: 6, name: 'Aristocats',              multiplier: 0.88, startPoints: 102 }
 ];

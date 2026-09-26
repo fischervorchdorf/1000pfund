@@ -41,10 +41,17 @@
         else el.value = wert;
     }
 
+    // Diese Felder gehoeren zum Team, nicht zum Tag. Sie stehen in
+    // teams-data.js und werden nie im Datensatz mitgespeichert, sonst
+    // wuerde eine zentrale Aenderung an alten Eintraegen vorbeilaufen.
+    var TEAMFELDER = ['teamName', 'multiplier', 'startPoints'];
+
+    function teamfeld(id) { return TEAMFELDER.indexOf(id) !== -1; }
+
     function formular() {
         var werte = {};
         felder().forEach(function (el) {
-            if (el.id === 'teamName') return;          // steckt im Datensatznamen
+            if (teamfeld(el.id)) return;
             werte[el.id] = lies(el);
         });
         werte.__summe = summe();
@@ -103,6 +110,19 @@
         });
     }
 
+    // Aendert sich ein Multiplikator, stimmt die gespeicherte Summe nicht mehr.
+    // Beim Oeffnen wird sie darum gegen die frisch gerechnete geprueft.
+    function summeNachziehen(name) {
+        var rec = datensaetze[name];
+        if (!rec) return;
+        var neu = summe();
+        if (rec.__summe === neu) return;
+        rec.__summe = neu;
+        stand = Date.now();
+        sichern();
+        melde('✓ Summe neu gerechnet: ' + neu);
+    }
+
     function teamVorgaben(name) {
         var liste = window.RALLYE_TEAMS || [];
         var t = liste.filter(function (x) { return x.name === name; })[0];
@@ -115,7 +135,7 @@
 
     function datensatzEinsetzen(rec) {
         felder().forEach(function (el) {
-            if (el.id === 'teamName') return;
+            if (teamfeld(el.id)) return;
             if (Object.prototype.hasOwnProperty.call(rec, el.id)) schreib(el, rec[el.id]);
         });
     }
@@ -180,6 +200,7 @@
         if (rec) datensatzEinsetzen(rec);
         tachoUebernehmen(name);
         neuRechnen();
+        summeNachziehen(name);
         uebertragZeigen();
     }
 
